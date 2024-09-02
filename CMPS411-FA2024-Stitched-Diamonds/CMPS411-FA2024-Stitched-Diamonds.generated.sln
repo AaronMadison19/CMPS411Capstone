@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMPS411-FA2024-Stitched-Diamonds", "CMPS411-FA2024-Stitched-Diamonds.csproj", "{447FDAF0-C2F0-47F0-90CA-F60E35F17D6C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{447FDAF0-C2F0-47F0-90CA-F60E35F17D6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{447FDAF0-C2F0-47F0-90CA-F60E35F17D6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{447FDAF0-C2F0-47F0-90CA-F60E35F17D6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{447FDAF0-C2F0-47F0-90CA-F60E35F17D6C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {587C6752-E250-4B2D-BECD-00BA4A56D01C}
+	EndGlobalSection
+EndGlobal

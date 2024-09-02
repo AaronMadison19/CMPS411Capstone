@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\CMPS411-FA2024-Stitched-Diamonds.props" />
+</Project>
