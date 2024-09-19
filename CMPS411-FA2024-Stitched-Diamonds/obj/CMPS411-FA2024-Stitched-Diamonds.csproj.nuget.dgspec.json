@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Aaron\\Projects\\CMPS411-FA2024-Stitched-Diamonds\\CMPS411-FA2024-Stitched-Diamonds\\CMPS411-FA2024-Stitched-Diamonds.csproj": {}
+    "C:\\Users\\Aaron\\CMPS411Capstone\\CMPS411-FA2024-Stitched-Diamonds\\CMPS411-FA2024-Stitched-Diamonds.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Aaron\\Projects\\CMPS411-FA2024-Stitched-Diamonds\\CMPS411-FA2024-Stitched-Diamonds\\CMPS411-FA2024-Stitched-Diamonds.csproj": {
+    "C:\\Users\\Aaron\\CMPS411Capstone\\CMPS411-FA2024-Stitched-Diamonds\\CMPS411-FA2024-Stitched-Diamonds.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Aaron\\Projects\\CMPS411-FA2024-Stitched-Diamonds\\CMPS411-FA2024-Stitched-Diamonds\\CMPS411-FA2024-Stitched-Diamonds.csproj",
+        "projectUniqueName": "C:\\Users\\Aaron\\CMPS411Capstone\\CMPS411-FA2024-Stitched-Diamonds\\CMPS411-FA2024-Stitched-Diamonds.csproj",
         "projectName": "CMPS411-FA2024-Stitched-Diamonds",
-        "projectPath": "C:\\Users\\Aaron\\Projects\\CMPS411-FA2024-Stitched-Diamonds\\CMPS411-FA2024-Stitched-Diamonds\\CMPS411-FA2024-Stitched-Diamonds.csproj",
+        "projectPath": "C:\\Users\\Aaron\\CMPS411Capstone\\CMPS411-FA2024-Stitched-Diamonds\\CMPS411-FA2024-Stitched-Diamonds.csproj",
         "packagesPath": "C:\\Users\\Aaron\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Aaron\\Projects\\CMPS411-FA2024-Stitched-Diamonds\\CMPS411-FA2024-Stitched-Diamonds\\obj\\",
+        "outputPath": "C:\\Users\\Aaron\\CMPS411Capstone\\CMPS411-FA2024-Stitched-Diamonds\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Aaron\\AppData\\Roaming\\NuGet\\NuGet.Config",

@@ -12,7 +12,7 @@ using System;
 using System.Reflection;
 
 [assembly: System.Reflection.AssemblyCompanyAttribute("CMPS411-FA2024-Stitched-Diamonds")]
-[assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
+[assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c0e30dfe2f04fbaa1de03863e8d14d1c4366e6ac")]
 [assembly: System.Reflection.AssemblyProductAttribute("CMPS411-FA2024-Stitched-Diamonds")]
