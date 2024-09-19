@@ -1,0 +1,11 @@
+﻿*.v2
+.vs/CMPS411-FA2024-Stitched-Diamonds/v17/.suo
+.vs/CMPS411-FA2024-Stitched-Diamonds/v17/DocumentLayout.json
+*.dll
+CMPS411-FA2024-Stitched-Diamonds/bin/Debug/net8.0/CMPS411-FA2024-Stitched-Diamonds.exe
+CMPS411-FA2024-Stitched-Diamonds/bin/Debug/net8.0/CMPS411-FA2024-Stitched-Diamonds.pdb
+CMPS411-FA2024-Stitched-Diamonds/bin/Debug/net8.0/CMPS411-FA2024-Stitched-Diamonds.staticwebassets.runtime.json
+CMPS411-FA2024-Stitched-Diamonds/obj/Debug/net8.0
+CMPS411-FA2024-Stitched-Diamonds/obj/CMPS411-FA2024-Stitched-Diamonds.csproj.nuget.dgspec.json
+CMPS411-FA2024-Stitched-Diamonds/obj/project.assets.json
+CMPS411-FA2024-Stitched-Diamonds/obj/project.nuget.cache
