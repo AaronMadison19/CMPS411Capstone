@@ -8,19 +8,19 @@
     "net8.0": []
   },
   "packageFolders": {
-    "C:\\Users\\Aaron\\.nuget\\packages\\": {}
+    "C:\\Users\\jmsas\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Aaron\\Projects\\CMPS411-FA2024-Stitched-Diamonds\\CMPS411-FA2024-Stitched-Diamonds\\CMPS411-FA2024-Stitched-Diamonds.csproj",
+      "projectUniqueName": "C:\\Users\\jmsas\\CMPS411Capstone\\CMPS411-FA2024-Stitched-Diamonds\\CMPS411-FA2024-Stitched-Diamonds.csproj",
       "projectName": "CMPS411-FA2024-Stitched-Diamonds",
-      "projectPath": "C:\\Users\\Aaron\\Projects\\CMPS411-FA2024-Stitched-Diamonds\\CMPS411-FA2024-Stitched-Diamonds\\CMPS411-FA2024-Stitched-Diamonds.csproj",
-      "packagesPath": "C:\\Users\\Aaron\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Aaron\\Projects\\CMPS411-FA2024-Stitched-Diamonds\\CMPS411-FA2024-Stitched-Diamonds\\obj\\",
+      "projectPath": "C:\\Users\\jmsas\\CMPS411Capstone\\CMPS411-FA2024-Stitched-Diamonds\\CMPS411-FA2024-Stitched-Diamonds.csproj",
+      "packagesPath": "C:\\Users\\jmsas\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\jmsas\\CMPS411Capstone\\CMPS411-FA2024-Stitched-Diamonds\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Aaron\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\jmsas\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -28,6 +28,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -69,7 +70,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.300/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.401/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
