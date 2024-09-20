@@ -34,3 +34,55 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# --- Additions for .NET, Visual Studio, and VS Code ---
+
+# Visual Studio temporary files, build results, and user-specific files
+.vscode/
+.vs/
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Rider / JetBrains IDEs (if applicable)
+.idea/
+*.sln.iml
+
+# Ignore build output
+*.dll
+*.exe
+*.log
+*.pdb
+
+# NuGet Packages
+packages/
+*.nupkg
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# DotNet tools
+.dotnet_tool.json
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# Visual Studio Code workspace history
+.vscode/settings.json
+.vscode/tasks.json
+.vscode/launch.json
+.vscode/extensions.json
+
+# Local test databases
+*.mdf
+*.ldf
+
+# Entity Framework Migrations
+Migrations/
+
+# Azure settings
+azure/
+local.settings.json
