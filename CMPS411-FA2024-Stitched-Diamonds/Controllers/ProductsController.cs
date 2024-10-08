@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-//using Azure;
 using CMPS411_FA2024_Stitched_Diamonds.Data;
 using CMPS411_FA2024_Stitched_Diamonds.Entities;
 using CMPS411_FA2024_Stitched_Diamonds.Common;
