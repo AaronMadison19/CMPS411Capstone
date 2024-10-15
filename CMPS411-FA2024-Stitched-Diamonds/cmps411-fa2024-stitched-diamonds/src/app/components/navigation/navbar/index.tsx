@@ -3,21 +3,32 @@ import Link from "next/link";
 
 const Navbar = () => {
   return (
-    <>
-            <ul className="hidden md:flex gap-x-6">
-              <li>
-                <Link href="/about" className = "mr-6">
-                     About Us 
-                </Link>
-                <Link href="/contact">
-                     Contact Us 
-                </Link>
-                <Link href="/products">
-                  Products
-                </Link>
-             </li>
-           </ul>
-    </>
+    <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
+
+      <li style={{ marginRight: '20px' }}>
+        <Link href="/">
+        Home
+        </Link>
+      </li>
+
+      <li style={{ marginRight: '20px' }}>
+        <Link href="/about">
+        About Us
+        </Link>
+      </li>
+
+      <li style={{ marginRight: '20px' }}>
+        <Link href="/contact">
+        Contact Us
+        </Link>
+      </li>
+
+      <li style={{ marginRight: '20px' }}>
+        <Link href="/products">
+        Products
+        </Link>
+      </li>
+    </ul>
   );
 };
 
