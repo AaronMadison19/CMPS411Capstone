@@ -14,6 +14,7 @@ namespace CMPS411_FA2024_Stitched_Diamonds.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<Categories> Categories { get; set; }
         public DbSet<Material> Materials { get; set; }
+        public DbSet<Order> Orders { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
