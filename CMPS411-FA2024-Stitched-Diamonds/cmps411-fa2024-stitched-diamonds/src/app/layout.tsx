@@ -1,9 +1,7 @@
 import Navigation from "./components/navigation/navbar";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-
-
-
+import styles from "./styles/page.module.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,8 +18,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-      <Navigation />
-        {children}</body>
+        <header className={styles.header}>
+          <h1 className={styles.companyName}>Made By Omega</h1>
+        </header>
+        <Navigation />
+        {children}
+      </body>
     </html>
   );
 }
