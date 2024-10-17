@@ -28,6 +28,13 @@ const Navbar = () => {
         Products
         </Link>
       </li>
+
+      <li style={{ marginRight: '20px' }}>
+        <Link href="/account/index">
+        Account
+        </Link>
+      </li>
+      
     </ul>
   );
 };
