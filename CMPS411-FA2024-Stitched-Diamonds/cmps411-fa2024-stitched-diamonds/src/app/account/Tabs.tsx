@@ -1,15 +1,8 @@
-<<<<<<< Updated upstream
-import React, { useState } from 'react';
-import ThreeDropdowns from './ThreeDropdowns';
-import UserProfileForm from './UserProfileForm';
-
-const Tabs: React.FC = () => {
-=======
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState} from 'react';
 import ThreeDropdowns from './ThreeDropdowns';
 import UserProfileForm from './UserProfileForm';
-import Link from "next/link";
+import Link from "next/link"
 import { useRouter, useSearchParams } from 'next/navigation';
 
 
@@ -23,7 +16,6 @@ const Tabs: React.FC = () => {
   //   }
   // }, [Tabs, router]);
   // const { tab } = router.query;
->>>>>>> Stashed changes
   const [activeTab, setActiveTab] = useState<'tab1' | 'tab2' | 'tab3' | 'tab4'>('tab1');
 
   const handleTabClick = (tab: 'tab1' | 'tab2' | 'tab3' | 'tab4') => {
