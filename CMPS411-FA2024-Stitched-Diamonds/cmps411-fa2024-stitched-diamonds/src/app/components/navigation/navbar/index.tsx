@@ -30,7 +30,7 @@ const Navbar = () => {
       </li>
 
       <li style={{ marginRight: '20px' }}>
-        <Link href="/account/index">
+        <Link href="/account">
         Account
         </Link>
       </li>

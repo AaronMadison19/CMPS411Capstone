@@ -1,8 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ThreeDropdowns from './ThreeDropdowns';
 import UserProfileForm from './UserProfileForm';
+import Link from "next/link"
+import { useRouter, useSearchParams } from 'next/navigation';
+
 
 const Tabs: React.FC = () => {
+  const searchParams = useSearchParams();
+  // const tab = searchParams.get('tab');
+  const router = useRouter();
+  useEffect(() => {
+    if (!Tabs) {
+      router.push('/account?tab=tab2');
+    }
+  }, [Tabs, router]);
+  // const { tab } = router.query;
   const [activeTab, setActiveTab] = useState<'tab1' | 'tab2' | 'tab3' | 'tab4'>('tab1');
 
   const handleTabClick = (tab: 'tab1' | 'tab2' | 'tab3' | 'tab4') => {
