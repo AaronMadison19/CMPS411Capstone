@@ -19,10 +19,6 @@ export default function Home() {
           <Link href="/products">Shop Now</Link>
         </div>
       </section>
-
-      <footer className={styles.footer}>
-        <p>© 2024 Made By Omega. All rights reserved.</p>
-      </footer>
     </main>
   );
 }
