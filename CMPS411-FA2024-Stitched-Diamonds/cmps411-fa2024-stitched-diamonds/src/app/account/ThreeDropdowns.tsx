@@ -46,7 +46,7 @@ const ThreeDropdowns: React.FC = () => {
 
       <div>
         <h4><label htmlFor="country">Region:</label></h4>
-        <select id="country" value={selectedOptions[0]} onChange={handleChange(0)}>
+        <select id="country" value={selectedOptions[0]} onChange={handleChange(0)} className="select">
           <option value="">Select Country</option>
           {countries.map(country => (
             <option key={country.code} value={country.code}>
@@ -58,7 +58,7 @@ const ThreeDropdowns: React.FC = () => {
 
       <div>
         <h4><label htmlFor="language">Language:</label></h4>
-        <select id="language" value={selectedOptions[1]} onChange={handleChange(1)} disabled={!selectedOptions[0]}>
+        <select id="language" value={selectedOptions[1]} onChange={handleChange(1)} disabled={!selectedOptions[0]} className="select">
           <option value="">Select your Language</option>
           {selectedCountry?.languages.map((lang: string, index: number) => (
             <option key={index} value={lang}>
@@ -70,7 +70,7 @@ const ThreeDropdowns: React.FC = () => {
 
       <div>
         <h4><label htmlFor="currency">Currency:</label></h4>
-        <select id="currency" value={selectedOptions[2]} onChange={handleChange(2)} disabled={!selectedOptions[0]}>
+        <select id="currency" value={selectedOptions[2]} onChange={handleChange(2)} disabled={!selectedOptions[0]} className="select">
           <option value="">Select Currency</option>
           {selectedCountry?.currencies.split(', ').map((curr: string, index: number) => (
             <option key={index} value={curr}>
@@ -85,7 +85,7 @@ const ThreeDropdowns: React.FC = () => {
           <div key={index}>You selected from Dropdown {index + 1}: {option}</div>
         ))}
         <br />
-        <button onClick={() => alert("Saved!")}>Save Settings</button>
+        <button onClick={() => alert("Saved!")} className="edit-profile-button">Save Settings</button>
       </div>
     </div>
   );

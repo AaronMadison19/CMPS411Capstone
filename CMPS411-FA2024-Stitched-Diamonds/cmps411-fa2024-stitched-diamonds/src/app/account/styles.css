@@ -6,7 +6,8 @@
 
 .tabs {
   display: flex;
-  border-bottom: 2px solid #ccc;
+  /* border-bottom: 2px solid #ccc;
+  background: #e1e1e1;   */
 }
 
 .tabs button {
@@ -16,29 +17,27 @@
   background: none;
   cursor: pointer;
   text-align: center;
+  color: black;
+  font-weight: bold;
 }
 
 .tabs button.active {
   border-bottom: 2px solid #007bff;
   font-weight: bold;
-  color: #007bff;
+  /* color: #007bff; */
 }
 
 .tab-content {
   padding: 20px;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   border-radius: 4px;
   margin-top: 10px;
-  background-color: #f9f9f9;
+  /* background-color: #f9f9f9; */
   }
 
 .form {
   display: flex;
   flex-direction: column;
-}
-
-.form-group {
-  margin-bottom: 15px;
 }
 
 label {
@@ -56,11 +55,12 @@ input[type="date"] {
 .edit-profile-button {
   margin-top: 10px;
   padding: 10px;
-  background-color: #007bff;
+  background-color: #007bff !important;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  width: 162.727px;
 }
 
 .edit-profile-button:hover {
@@ -98,6 +98,22 @@ h2 {
     margin-bottom: 15px;
 }
 
+.publicprofile {
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center; /* Center the items vertically */
+  margin-bottom: 10px; /* Space between form groups */
+}
+
+.publicprofile label {
+  margin-right: 10px; /* Space between label and input */
+  white-space: nowrap; /* Prevent label from wrapping */
+}
+
+.publicprofile input {
+  flex: 1; /* Allow the input to grow */
+}
+
 label {
     display: block;
     margin-bottom: 5px;
@@ -106,7 +122,8 @@ label {
 input[type="text"],
 input[type="date"],
 textarea {
-    width: 100%;
+    /* width: 100%; */
+    width: 298.182px;
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -139,4 +156,24 @@ button:hover {
   border-radius: 4px;
 }
 
-  
+.borderstest{
+  padding: 20px;
+  border: 1px solid black;
+  border-radius: 4px;
+  margin-top: 10px;
+  border-radius: 12px;
+  border-color: rgba(14, 14, 14, 0.18);
+}
+
+.select{
+  cursor: pointer;
+  border-radius: 6px;
+  width: 298.182px;
+  height: 30px;
+  padding-left: 12px;
+  padding-right: 36px;
+  font-family: inherit;
+  font-size: 16px;
+  transition: border-color .2s ease-out, box-shadow .2s ease-out;
+  display: block;
+}

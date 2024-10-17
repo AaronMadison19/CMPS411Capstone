@@ -48,7 +48,7 @@ const UserProfileForm: React.FC = () => {
                     <img src={profilePicture as string} alt="Profile Preview" className="profile-preview" />
                 )}
             </div>
-            <div className="form-group">
+            <div className="publicprofile">
                 <label htmlFor="name">Name:</label>
                 <input
                     type="text"
@@ -56,11 +56,13 @@ const UserProfileForm: React.FC = () => {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                 />
-                <button onClick={() => alert('Edit feature not implemented.')}>Edit</button>
+                {/* <button onClick={() => alert('Edit feature not implemented.')} className="edit-profile-button">Edit</button> */}
+
+                
             </div>
-            <div className="form-group">
+            <div className="publicprofile">
                 <label>Gender:</label>
-                <div>
+                <div style={{ display: 'flex', gap: '10px' }}>
                     <input
                         type="radio"
                         id="male"
@@ -69,9 +71,9 @@ const UserProfileForm: React.FC = () => {
                         checked={gender === 'male'}
                         onChange={(e) => setGender(e.target.value)}
                     />
-                    <label htmlFor="male">Male</label>
+                    <label htmlFor="male" style={{ paddingTop: '5px' }}>Male</label>
                 </div>
-                <div>
+                <div style={{ display: 'flex', gap: '10px' }}>
                     <input
                         type="radio"
                         id="female"
@@ -80,9 +82,9 @@ const UserProfileForm: React.FC = () => {
                         checked={gender === 'female'}
                         onChange={(e) => setGender(e.target.value)}
                     />
-                    <label htmlFor="female">Female</label>
+                    <label htmlFor="female" style={{ paddingTop: '5px' }}>Female</label>
                 </div>
-                <div>
+                <div style={{ display: 'flex', gap: '10px' }}>
                     <input
                         type="radio"
                         id="other"
@@ -91,10 +93,10 @@ const UserProfileForm: React.FC = () => {
                         checked={gender === 'other'}
                         onChange={(e) => setGender(e.target.value)}
                     />
-                    <label htmlFor="other">Other</label>
+                    <label htmlFor="other" style={{ paddingTop: '5px' }}>Other</label>
                 </div>
             </div>
-            <div className="form-group">
+            <div className="publicprofile">
                 <label htmlFor="birthday">Birthday:</label>
                 <input
                     type="date"
@@ -103,46 +105,13 @@ const UserProfileForm: React.FC = () => {
                     onChange={(e) => setBirthday(e.target.value)}
                 />
             </div>
-            <div className="form-group">
+            <div className="publicprofile">
                 <label htmlFor="aboutYou">About You:</label>
                 <textarea
                     id="aboutYou"
                     value={aboutYou}
                     onChange={(e) => setAboutYou(e.target.value)}
                 />
-            </div>
-            <div className="form-group">
-                <label>Hobbies:</label>
-                <div>
-                    <input
-                        type="checkbox"
-                        id="hobby1"
-                        name="hobby1"
-                        checked={hobbies.hobby1}
-                        onChange={handleHobbyChange}
-                    />
-                    <label htmlFor="hobby1">Hobby 1</label>
-                </div>
-                <div>
-                    <input
-                        type="checkbox"
-                        id="hobby2"
-                        name="hobby2"
-                        checked={hobbies.hobby2}
-                        onChange={handleHobbyChange}
-                    />
-                    <label htmlFor="hobby2">Hobby 2</label>
-                </div>
-                <div>
-                    <input
-                        type="checkbox"
-                        id="hobby3"
-                        name="hobby3"
-                        checked={hobbies.hobby3}
-                        onChange={handleHobbyChange}
-                    />
-                    <label htmlFor="hobby3">Hobby 3</label>
-                </div>
             </div>
             <button onClick={handleSave}>Save</button>
         </div>
