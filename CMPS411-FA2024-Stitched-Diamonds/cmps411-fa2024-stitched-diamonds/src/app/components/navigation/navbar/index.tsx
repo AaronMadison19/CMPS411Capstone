@@ -32,6 +32,13 @@ const Navbar = () => {
       <li className={styles.navbar}>
         <Link href="/login">Login</Link>
       </li>
+
+      <li className={styles.navbar}>
+        <Link href="/account">
+        Account
+        </Link>
+      </li>
+      
     </ul>
   );
 };
