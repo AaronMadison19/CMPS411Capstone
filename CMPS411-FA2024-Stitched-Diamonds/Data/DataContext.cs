@@ -42,6 +42,10 @@ namespace CMPS411_FA2024_Stitched_Diamonds.Data
                 .Property(x => x.ImageUrl)
                 .IsRequired();
 
+            modelBuilder.Entity<Product>()
+                .Property(x => x.Quantity_In_Stock)
+                .IsRequired();
+
             modelBuilder.Entity<Categories>()
                 .Property(x => x.Type)
                 .IsRequired();
