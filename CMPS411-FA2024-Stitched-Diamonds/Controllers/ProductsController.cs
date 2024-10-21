@@ -78,6 +78,7 @@ namespace CMPS411_FA2024_Stitched_Diamonds.Controllers
             product.Price = productUpdate.Price;
             product.ImageUrl = productUpdate.ImageUrl;
             product.Details = productUpdate.Details;
+            product.Quantity_In_Stock = productUpdate.Quantity_In_Stock;
 
             _dataContext.SaveChanges();
 

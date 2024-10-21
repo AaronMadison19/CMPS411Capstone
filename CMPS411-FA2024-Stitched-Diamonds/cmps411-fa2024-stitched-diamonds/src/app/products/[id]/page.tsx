@@ -13,6 +13,7 @@ type Product = {
   price: number;
   imageUrl: string;
   details: string;
+  quantity_In_Stock: number;
 };
 
 const ProductPage = async ({ params }: { params: { id: string } }) => {
@@ -27,6 +28,8 @@ const ProductPage = async ({ params }: { params: { id: string } }) => {
     // Access product data from the correct field
     const product = res.data.data;
 
+    console.log(product);
+
     if (!product) {
       return <div>Product not found</div>;
     }
@@ -39,6 +42,7 @@ const ProductPage = async ({ params }: { params: { id: string } }) => {
         <p>{product.description}</p>
         <p>${product.price}</p>
         <p>{product.details}</p>
+        <p>Quantity: {product.quantity_In_Stock}</p>
       </div>
     );
   } catch (error) {
