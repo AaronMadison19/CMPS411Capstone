@@ -1,0 +1,80 @@
+/* General Container */
+.aboutContainer {
+    max-width: 1200px; /* Limits the width of the content */
+    margin: 0 auto; /* Centers the content horizontally */
+    padding: 20px;
+    background-color: var(--background-primary); /* Background color for the whole section */
+    color: black; /* Change text color to black for better visibility */
+  }
+  
+  /* Hero Section */
+  .heroSection {
+    text-align: center;
+    padding: 40px 0;
+    background-color: var(--background-secondary); /* Background color for hero section */
+    margin-bottom: 30px;
+    border-radius: 12px; /* Rounded corners */
+  }
+  
+  .heroTitle {
+    font-size: 36px;
+    font-weight: bold;
+    color: black; /* Change to black */
+    margin-bottom: 10px;
+  }
+  
+  .heroSubtitle {
+    font-size: 18px;
+    color: black; /* Change to black */
+  }
+  
+  /* Section Title */
+  .sectionTitle {
+    font-size: 28px;
+    margin-bottom: 15px;
+    font-weight: bold;
+    color: black; /* Change to black */
+    text-align: center;
+  }
+  
+  /* Section Text */
+  .sectionText {
+    font-size: 16px;
+    line-height: 1.6;
+    color: black; /* Change to black */
+    max-width: 800px;
+    margin: 0 auto; /* Centers the text within the section */
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  
+  /* Values Section */
+  .valuesSection {
+    text-align: center;
+  }
+  
+  .valuesList {
+    list-style: none; /* Removes bullet points */
+    padding: 0;
+    margin: 0 auto;
+    max-width: 600px; /* Limits the width of the values list */
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Creates a two-column layout */
+    grid-gap: 20px; /* Adds space between the list items */
+  }
+  
+  .valuesList li {
+    background-color: var(--background-secondary); /* Each value gets a background */
+    padding: 20px;
+    border-radius: 8px; /* Rounds the corners of each value box */
+    font-size: 16px;
+    color: black; /* Change to black */
+    font-weight: bold;
+  }
+  
+  /* Team Section */
+  .teamSection {
+    margin-top: 60px;
+    text-align: center;
+  }
+  
