@@ -61,42 +61,6 @@ const UserProfileForm: React.FC = () => {
                 
             </div>
             <div className="publicprofile">
-                <label>Gender:</label>
-                <div style={{ display: 'flex', gap: '10px' }}>
-                    <input
-                        type="radio"
-                        id="male"
-                        name="gender"
-                        value="male"
-                        checked={gender === 'male'}
-                        onChange={(e) => setGender(e.target.value)}
-                    />
-                    <label htmlFor="male" style={{ paddingTop: '5px' }}>Male</label>
-                </div>
-                <div style={{ display: 'flex', gap: '10px' }}>
-                    <input
-                        type="radio"
-                        id="female"
-                        name="gender"
-                        value="female"
-                        checked={gender === 'female'}
-                        onChange={(e) => setGender(e.target.value)}
-                    />
-                    <label htmlFor="female" style={{ paddingTop: '5px' }}>Female</label>
-                </div>
-                <div style={{ display: 'flex', gap: '10px' }}>
-                    <input
-                        type="radio"
-                        id="other"
-                        name="gender"
-                        value="other"
-                        checked={gender === 'other'}
-                        onChange={(e) => setGender(e.target.value)}
-                    />
-                    <label htmlFor="other" style={{ paddingTop: '5px' }}>Other</label>
-                </div>
-            </div>
-            <div className="publicprofile">
                 <label htmlFor="birthday">Birthday:</label>
                 <input
                     type="date"
@@ -113,7 +77,11 @@ const UserProfileForm: React.FC = () => {
                     onChange={(e) => setAboutYou(e.target.value)}
                 />
             </div>
-            <button onClick={handleSave}>Save</button>
+            {/* <button onClick={handleSave}>Save</button> */}
+            <div>        
+                <button onClick={() => alert("Saved!")} className="edit-profile-button">Save</button>
+            </div>
+            
         </div>
     );
 };

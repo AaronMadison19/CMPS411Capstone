@@ -5,6 +5,8 @@ using CMPS411_FA2024_Stitched_Diamonds.Entities;
 using CMPS411_FA2024_Stitched_Diamonds.Common;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
+using System.Data;
 
 namespace CMPS411_FA2024_Stitched_Diamonds.Controllers
 {
@@ -31,19 +33,20 @@ namespace CMPS411_FA2024_Stitched_Diamonds.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Response<Account>> GetAccountById(int id)
+        public ActionResult<Response<Account>> GetAccountById(int id) // returns action result containing response
         {
-            var response = new Response<Account>();
+            var response = new Response<Account>(); // Initializes a new instance of the Response class, which likely encapsulates the data and any potential errors
 
+            //Queries the database context (_dataContext) for an account with the specified ID. The FirstOrDefault method returns the first matching record or null if none is found
             var account = _dataContext.Accounts.FirstOrDefault(p => p.Id == id);
 
             if (account == null)
             {
-                response.AddError("id", "Account not found");
+                response.AddError("id", "Account not found"); 
                 return NotFound(response);
             }
 
-            response.Data = account;
+            response.Data = account; //If the account is found, it sets the Data property of the response and returns an Ok response containing the account data
             return Ok(response);
         }
 
