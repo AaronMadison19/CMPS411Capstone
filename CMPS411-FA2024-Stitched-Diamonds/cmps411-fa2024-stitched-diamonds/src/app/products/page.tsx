@@ -20,13 +20,7 @@ export default function ProductList() {
     axios
       .get("https://localhost:7120/api/products")
       .then((response) => {
-        const fetchedProducts = response.data.data; // Assuming the data is in the 'data' field
-        setProducts(fetchedProducts);
-
-        // Log the image URLs to the console
-        fetchedProducts.forEach((product: Product) => {
-          console.log(product.imageurl); // Log each image URL
-        });
+        setProducts(response.data.data); // Assuming the data is in the 'data' field
       })
       .catch((error) => {
         console.error("Error fetching products", error);
@@ -38,23 +32,14 @@ export default function ProductList() {
       <h1>Product List</h1>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "20px" }}>
         {products.map((product) => (
-          <div key={product.id} className="card" style={{ display: "flex", alignItems: "flex-start" }}>
-          <Link href={`/products/${product.id}`}>
-            <div className="imageContainer">
-              <img
-                src={product.imageurl}
-                alt={product.name}
-                style={{ width: "100%", height: "auto", objectFit: "cover" }} // Use object-fit to maintain aspect ratio
-              />
-            </div>
-          </Link>
-          <div className="details">
-            <h2 style={{ margin: 0 }}>{product.name}</h2>
+          <div key={product.id} style={{ border: "1px solid #ccc", padding: "10px" }}>
+            <Link href={`/products/${product.id}`}>
+              <h2>{product.name}</h2>
+            </Link>
             <p>{product.description}</p>
-            <p className="price">Price: ${product.price}</p>
-            <button className="addToCartBtn">Add to Cart</button>
+            <p>Price: ${product.price}</p>
+            <img src={product.imageurl} alt={product.name} style={{ width: "100%", height: "auto" }} />
           </div>
-        </div>        
         ))}
       </div>
     </>
