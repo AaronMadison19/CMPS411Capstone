@@ -125,3 +125,25 @@
 .addToCartBtn:hover {
   background-color: #005bb5;
 }
+
+.container {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.imageContainer {
+  width: 575px;
+  height: 575px;
+  overflow: hidden;
+}
+
+.imageContainer img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.details {
+  flex: 1;
+}

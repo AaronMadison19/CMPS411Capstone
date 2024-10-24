@@ -1,9 +1,9 @@
 :root {
-  --background-primary: #FFE5E5;
-  --background-secondary: #FF7373;
+  --background-primary: #FFCCCC;
+  --background-secondary: #660099;
 
   --foreground-primary: #FFFFFF;
-  --foreground-link: #72002E;
+  --foreground-link: #FFFFFF;
   --foreground-link-hover: #ac0b4c;
   --foreground-link-visited: #4d162c;
 

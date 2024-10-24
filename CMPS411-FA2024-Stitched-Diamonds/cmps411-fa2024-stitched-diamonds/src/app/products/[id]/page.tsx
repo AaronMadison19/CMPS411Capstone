@@ -1,6 +1,7 @@
 import axios from 'axios';
 import https from 'https';
 import { useRouter } from 'next/navigation';
+import styles from '../../styles/page.module.css';
 
 const httpsAgent = new https.Agent({
   rejectUnauthorized: false,
@@ -36,13 +37,17 @@ const ProductPage = async ({ params }: { params: { id: string } }) => {
 
     // Render product details
     return (
-      <div>
+      <div className={styles.container}>
+        <div className={styles.details}>
         <h1>{product.name}</h1>
-        <img src={product.imageUrl} alt={product.name} />
         <p>{product.description}</p>
         <p>${product.price}</p>
         <p>{product.details}</p>
         <p>Quantity: {product.quantity_In_Stock}</p>
+        </div>
+        <div className={styles.imageContainer}>
+            <img src={product.imageUrl} alt={product.name} />
+        </div>
       </div>
     );
   } catch (error) {
