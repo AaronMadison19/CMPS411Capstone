@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   --background-primary: #FFCCCC;
   --background-secondary: #660099;
