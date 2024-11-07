@@ -6,5 +6,8 @@
         public string Type { get; set; }
         public bool Is_Allergen_Free { get; set; }
         public int Quantity_In_Stock { get; set; }
+        public decimal Cost {  get; set; } 
+        public int Reorder_Level { get; set; }
+        public int Reorder_Quantity { get; set; }
     }
 }
