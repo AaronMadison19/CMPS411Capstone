@@ -12,4 +12,35 @@
         public int Quantity { get; set; }
         public decimal Price { get; set; }
     }
+
+    public class Order_ItemGetDto
+    {
+        public int Id { get; set; }
+        public int OrderId { get; set; }
+        public OrderGetDto Order { get; set; }
+        public int ProductId { get; set; }
+        public ProductGetDto Product { get; set; }
+        public int Product_VariantId { get; set; }
+        public Product_VariantGetDto Product_Variant { get; set; }
+        public int Quantity { get; set; }
+        public decimal Price { get; set; }
+    }
+
+    public class Order_ItemCreateDto
+    {
+        public int OrderId { get; set; }
+        public int ProductId { get; set; }
+        public int Product_VariantId { get; set; }
+        public int Quantity { get; set; }
+        public decimal Price { get; set; }
+    }
+
+    public class Order_ItemUpdateDto
+    {
+        public int OrderId { get; set; }
+        public int ProductId { get; set; }
+        public int Product_VariantId { get; set; }
+        public int Quantity { get; set; }
+        public decimal Price { get; set; }
+    }
 }

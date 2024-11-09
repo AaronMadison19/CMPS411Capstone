@@ -12,8 +12,51 @@
         public User User { get; set; }
         public int SessionId { get; set; }
         public Session Session { get; set; }
-        public int ShippingId { get; set; }
-        public Shipping Shipping { get; set; }
+        /*public int ShippingId { get; set; }
+        public Shipping Shipping { get; set; } */
+        public string Order_Status { get; set; }
+    }
+
+    public class OrderGetDto
+    {
+        public int Id { get; set; }
+        public DateTime Date { get; set; }
+        public int Number { get; set; }
+        public decimal Total_Price { get; set; }
+        public string Payment_Method { get; set; }
+        public string Payment_Status { get; set; }
+        public int UserId { get; set; }
+        public UserGetDto User { get; set; }
+        public int SessionId { get; set; }
+        public SessionGetDto Session { get; set; }
+        /* public int ShippingId { get; set; }
+        public ShippingGetDto Shipping { get; set; } */
+        public string Order_Status { get; set; }
+    }
+
+    public class OrderCreateDto
+    {
+        public DateTime Date { get; set; }
+        public int Number { get; set; }
+        public decimal Total_Price { get; set; }
+        public string Payment_Method { get; set; }
+        public string Payment_Status { get; set; }
+        public int UserId { get; set; }
+        public int SessionId { get; set; }
+        // public int ShippingId { get; set; }
+        public string Order_Status { get; set; }
+    }
+
+    public class OrderUpdateDto
+    {
+        public DateTime Date { get; set; }
+        public int Number { get; set; }
+        public decimal Total_Price { get; set; }
+        public string Payment_Method { get; set; }
+        public string Payment_Status { get; set; }
+        public int UserId { get; set; }
+        public int SessionId { get; set; }
+        // public int ShippingId { get; set; }
         public string Order_Status { get; set; }
     }
 }
