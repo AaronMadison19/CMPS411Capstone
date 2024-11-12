@@ -7,6 +7,7 @@
         public string PaymentMethod { get; set; }
         public decimal Amount { get; set; }
         public DateTime PaymentDate { get; set; }
+        public string Status { get; set; }
 
         public Order Order { get; set; }
     }
@@ -17,6 +18,7 @@
         public string PaymentMethod { get; set; }
         public decimal Amount { get; set; }
         public DateTime PaymentDate { get; set; }
+        public string Status { get; set; }
     }
 
     public class PaymentGetDto
@@ -26,5 +28,13 @@
         public string PaymentMethod { get; set; }
         public decimal Amount { get; set; }
         public DateTime PaymentDate { get; set; }
+        public string Status { get; set; }
+
+        public OrderGetDto Order { get; set; }
+    }
+
+    public class PaymentUpdateDto
+    {
+        public string Status { get; set; }
     }
 }
