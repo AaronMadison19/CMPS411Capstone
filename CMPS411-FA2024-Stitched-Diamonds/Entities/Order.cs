@@ -8,14 +8,12 @@
         public decimal TotalPrice { get; set; }
         public string PaymentMethod { get; set; }
         public string PaymentStatus { get; set; }
-        public int AccountId { get; set; }
-        public int SessionId { get; set; }
-        public int ShippingId { get; set; }
+        public int? AccountId { get; set; }
+        public int? SessionId { get; set; }
         public string OrderStatus { get; set; }
 
-        public Account Account { get; set; }
-        public Session Session { get; set; }
-        public Shipping Shipping { get; set; }
+        public Account? Account { get; set; }
+        public Session? Session { get; set; }
         public ICollection<OrderItem> OrderItems { get; set; }
     }
 
@@ -26,9 +24,8 @@
         public decimal TotalPrice { get; set; }
         public string PaymentMethod { get; set; }
         public string PaymentStatus { get; set; }
-        public int AccountId { get; set; }
-        public int SessionId { get; set; }
-        public int ShippingId { get; set; }
+        public int? AccountId { get; set; }
+        public int? SessionId { get; set; }
         public string OrderStatus { get; set; }
     }
 
@@ -46,6 +43,12 @@
         public decimal TotalPrice { get; set; }
         public string PaymentMethod { get; set; }
         public string PaymentStatus { get; set; }
+        public int? AccountId { get; set; }
+        public int? SessionId { get; set; }
         public string OrderStatus { get; set; }
+
+        public AccountGetDto? Account { get; set; }
+        public SessionGetDto? Session { get; set; }
+
     }
 }

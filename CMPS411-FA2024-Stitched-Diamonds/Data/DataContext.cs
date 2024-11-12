@@ -57,13 +57,6 @@ namespace CMPS411_FA2024_Stitched_Diamonds.Data
                 .HasForeignKey(o => o.SessionId)
                 .OnDelete(DeleteBehavior.Restrict);  // If session is deleted, set SessionId to null
 
-            // Order -> Shipping relationship
-            modelBuilder.Entity<Order>()
-                .HasOne(o => o.Shipping)
-                .WithMany()
-                .HasForeignKey(o => o.ShippingId)
-                .OnDelete(DeleteBehavior.Restrict);
-
             // OrderItem -> Order relationship
             modelBuilder.Entity<OrderItem>()
                 .HasOne(oi => oi.Order)
