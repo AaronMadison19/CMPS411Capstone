@@ -132,7 +132,8 @@ namespace CMPS411_FA2024_Stitched_Diamonds.Data
                 .HasOne(c => c.Account)
                 .WithMany(a => a.Carts)
                 .HasForeignKey(c => c.AccountId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.NoAction)
+                .IsRequired(false);
 
             // Cart -> Session relationship (for guest users)
             modelBuilder.Entity<Cart>()
