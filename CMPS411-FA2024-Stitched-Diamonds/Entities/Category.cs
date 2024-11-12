@@ -18,4 +18,9 @@
         public int Id { get; set; }
         public string Type { get; set; }
     }
+
+    public class CategoryUpdateDto
+    {
+        public string Type { get; set; }
+    }
 }
