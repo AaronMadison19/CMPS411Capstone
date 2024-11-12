@@ -6,9 +6,10 @@
         public int ProductId { get; set; }
         public int AccountId { get; set; }
         public int Rating { get; set; }
+        public string Title { get; set; }
         public string Comment { get; set; }
-        public DateTime ReviewDate { get; set; }
-
+        public DateTime CreatedAt { get; set; }
+        public bool IsVisible { get; set; }
         public Product Product { get; set; }
         public Account Account { get; set; }
     }
@@ -18,7 +19,10 @@
         public int ProductId { get; set; }
         public int AccountId { get; set; }
         public int Rating { get; set; }
+        public string Title { get; set; }
         public string Comment { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public bool IsVisible { get; set; }
     }
 
     public class ReviewGetDto
@@ -27,7 +31,17 @@
         public int ProductId { get; set; }
         public int AccountId { get; set; }
         public int Rating { get; set; }
+        public string Title { get; set; }
         public string Comment { get; set; }
-        public DateTime ReviewDate { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public bool IsVisible { get; set; }
+    }
+
+    public class ReviewUpdateDto
+    {
+        public int Rating { get; set; }
+        public string Title { get; set; }
+        public string Comment { get; set; }
+        public bool IsVisible { get; set; }
     }
 }
