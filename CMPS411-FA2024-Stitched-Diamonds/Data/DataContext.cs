@@ -40,7 +40,8 @@ namespace CMPS411_FA2024_Stitched_Diamonds.Data
                 .HasOne(s => s.Account)
                 .WithMany(a => a.Sessions)
                 .HasForeignKey(s => s.AccountId)
-                .OnDelete(DeleteBehavior.NoAction);  // Account deletion will remove the sessions
+                .OnDelete(DeleteBehavior.NoAction)
+                .IsRequired(false);                     // Account deletion will remove the sessions
 
             // Order -> Account relationship
             modelBuilder.Entity<Order>()
