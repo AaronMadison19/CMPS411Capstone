@@ -16,16 +16,23 @@
     public class AdminActionCreateDto
     {
         public int ProductId { get; set; }
+        public int AccountId { get; set; }
         public string ActionType { get; set; }
         public string Details { get; set; }
+        public DateTime ActionDate { get; set; }
+
     }
 
     public class AdminActionGetDto
     {
         public int Id { get; set; }
         public int ProductId { get; set; }
+        public int AccountId { get; set; }
         public string ActionType { get; set; }
         public DateTime ActionDate { get; set; }
         public string Details { get; set; }
+        public ProductGetDto Product { get; set; }
+        public AccountGetDto Account { get; set; }
+
     }
 }
