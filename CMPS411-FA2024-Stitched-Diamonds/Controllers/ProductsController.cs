@@ -70,7 +70,7 @@ namespace CMPS411_FA2024_Stitched_Diamonds.Controllers
                     MaterialId = p.MaterialId,
                     QuantityInStock = p.QuantityInStock
                 })
-                .FirstOrDefault();
+                .FirstOrDefault(product => product.Id == id);
 
             if (product == null)
             {
