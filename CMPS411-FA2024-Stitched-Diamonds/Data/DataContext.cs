@@ -75,7 +75,7 @@ namespace CMPS411_FA2024_Stitched_Diamonds.Data
             modelBuilder.Entity<OrderItem>()
                 .HasOne(oi => oi.ProductVariant)
                 .WithMany()
-                .HasForeignKey(oi => oi.ProductVariantId)
+                .HasForeignKey(oi => oi.VariantId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             // Product -> Category relationship

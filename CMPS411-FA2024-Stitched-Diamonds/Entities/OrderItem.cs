@@ -5,7 +5,7 @@
         public int Id { get; set; }
         public int OrderId { get; set; }
         public int ProductId { get; set; }
-        public int ProductVariantId { get; set; }
+        public int VariantId { get; set; }
         public int Quantity { get; set; }
         public decimal Price { get; set; }
 
@@ -27,6 +27,17 @@
     {
         public int Id { get; set; }
         public int OrderId { get; set; }
+        public int ProductId { get; set; }
+        public int VariantId { get; set; }
+        public int Quantity { get; set; }
+        public decimal Price { get; set; }
+        public OrderGetDto Order { get; set; }
+        public ProductGetDto Product { get; set; }
+        public ProductVariantGetDto ProductVariant { get; set; }
+    }
+
+    public class OrderItemUpdateDto
+    {
         public int ProductId { get; set; }
         public int VariantId { get; set; }
         public int Quantity { get; set; }
