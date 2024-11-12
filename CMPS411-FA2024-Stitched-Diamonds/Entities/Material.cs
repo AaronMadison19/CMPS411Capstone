@@ -27,4 +27,12 @@
         public int QuantityInStock { get; set; }
         public decimal Cost { get; set; }
     }
+
+    public class MaterialUpdateDto
+    {
+        public string Type { get; set; }
+        public bool IsAllergenFree { get; set; }
+        public int QuantityInStock { get; set; }
+        public decimal Cost { get; set; }
+    }
 }
