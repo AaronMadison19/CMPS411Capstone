@@ -1,139 +1,195 @@
-﻿using CMPS411_FA2024_Stitched_Diamonds.Controllers;
-using CMPS411_FA2024_Stitched_Diamonds.Entities;
+﻿using CMPS411_FA2024_Stitched_Diamonds.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace CMPS411_FA2024_Stitched_Diamonds.Data
 {
-    public sealed class DataContext : DbContext
+    public class DataContext : DbContext
     {
-        public DataContext(DbContextOptions<DataContext> options) 
-            : base(options)
-        {
-        }
+        public DataContext(DbContextOptions<DataContext> options) : base(options) { }
 
-        public DbSet<Product> Products { get; set; }
-        public DbSet<Categories> Categories { get; set; }
-        public DbSet<Material> Materials { get; set; }
-        public DbSet<Order> Orders { get; set; }
-        public DbSet<Sale> Sales { get; set; }
+        // DbSets for all entities
         public DbSet<Account> Accounts { get; set; }
+        public DbSet<Session> Sessions { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<ProductVariant> ProductVariants { get; set; }
+        public DbSet<Shipping> Shippings { get; set; }
+        public DbSet<Payment> Payments { get; set; }
+        public DbSet<Review> Reviews { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Subcategory> Subcategories { get; set; }
+        public DbSet<Material> Materials { get; set; }
+        public DbSet<AdminAction> AdminActions { get; set; }
+        public DbSet<Cart> Carts { get; set; }
+        public DbSet<CartItem> CartItems { get; set; }
 
-
+        // Override OnModelCreating to define any relationships or constraints
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Product>()
-                .Property(x => x.Name)
-                .IsRequired();
+            base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Product>()
-                .Property(x => x.Description)
-                .IsRequired();
+            // Defining Account unique fields
+            modelBuilder.Entity<Account>()
+                .HasIndex(a => a.Email).IsUnique();
+            modelBuilder.Entity<Account>()
+                .HasIndex(a => a.Username).IsUnique();
 
-            modelBuilder.Entity<Product>()
-                .Property(x => x.Details)
-                .IsRequired();
+            // Session -> Account relationship
+            modelBuilder.Entity<Session>()
+                .HasOne(s => s.Account)
+                .WithMany(a => a.Sessions)
+                .HasForeignKey(s => s.AccountId)
+                .OnDelete(DeleteBehavior.NoAction);  // Account deletion will remove the sessions
 
-            modelBuilder.Entity<Product>()
-                .Property(x => x.Price)
-                .IsRequired();
-
-            modelBuilder.Entity<Product>()
-                .Property(x => x.ImageUrl)
-                .IsRequired();
-
-            modelBuilder.Entity<Product>()
-                .Property(x => x.Quantity_In_Stock)
-                .IsRequired();
-
-            modelBuilder.Entity<Categories>()
-                .Property(x => x.Type)
-                .IsRequired();
-
-            modelBuilder.Entity<Categories>()
-                .Property(x => x.Category_Type)
-                .IsRequired();
-
-            modelBuilder.Entity<Material>()
-                .Property(x => x.Type)
-                .IsRequired();
-
-            modelBuilder.Entity<Material>()
-                .Property(x => x.Is_Allergen_Free)
-                .IsRequired();
-
-            modelBuilder.Entity<Material>()
-                .Property(x => x.Quantity_In_Stock)
-                .IsRequired();
-
+            // Order -> Account relationship
             modelBuilder.Entity<Order>()
-                .Property(x => x.Date)
-                .IsRequired();
+                .HasOne(o => o.Account)
+                .WithMany(a => a.Orders)
+                .HasForeignKey(o => o.AccountId)
+                .OnDelete(DeleteBehavior.NoAction);
 
+            // Order -> Session relationship
             modelBuilder.Entity<Order>()
-                .Property(x => x.Number)
-                .IsRequired();
+                .HasOne(o => o.Session)
+                .WithMany()
+                .HasForeignKey(o => o.SessionId)
+                .OnDelete(DeleteBehavior.Restrict);  // If session is deleted, set SessionId to null
 
+            // Order -> Shipping relationship
             modelBuilder.Entity<Order>()
-                .Property(x => x.Total_Price)
-                .IsRequired();
+                .HasOne(o => o.Shipping)
+                .WithMany()
+                .HasForeignKey(o => o.ShippingId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Order>()
-                .Property(x => x.Payment_Method)
-                .IsRequired();
+            // OrderItem -> Order relationship
+            modelBuilder.Entity<OrderItem>()
+                .HasOne(oi => oi.Order)
+                .WithMany(o => o.OrderItems)
+                .HasForeignKey(oi => oi.OrderId)
+                .OnDelete(DeleteBehavior.NoAction);
 
-            modelBuilder.Entity<Sale>()
-                .Property(x => x.Quantity_Sold)
-                .IsRequired();
+            // OrderItem -> Product relationship
+            modelBuilder.Entity<OrderItem>()
+                .HasOne(oi => oi.Product)
+                .WithMany(p => p.OrderItems)
+                .HasForeignKey(oi => oi.ProductId)
+                .OnDelete(DeleteBehavior.NoAction);
 
-            modelBuilder.Entity<Sale>()
-                .Property(x => x.Unit_Price)
-                .IsRequired();
+            // OrderItem -> ProductVariant relationship
+            modelBuilder.Entity<OrderItem>()
+                .HasOne(oi => oi.ProductVariant)
+                .WithMany()
+                .HasForeignKey(oi => oi.ProductVariantId)
+                .OnDelete(DeleteBehavior.NoAction);
 
-            modelBuilder.Entity<Account>()
-                .Property(x => x.First_Name)
-                .IsRequired();
+            // Product -> Category relationship
+            modelBuilder.Entity<Product>()
+                .HasOne(p => p.Category)
+                .WithMany(c => c.Products)
+                .HasForeignKey(p => p.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Account>()
-                .Property(x => x.Last_Name)
-                .IsRequired();
+            // Product -> Material relationship
+            modelBuilder.Entity<Product>()
+                .HasOne(p => p.Material)
+                .WithMany(m => m.Products)
+                .HasForeignKey(p => p.MaterialId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Account>()
-                .Property(x => x.Username)
-                .IsRequired();
+            // ProductVariant -> Product relationship
+            modelBuilder.Entity<ProductVariant>()
+                .HasOne(pv => pv.Product)
+                .WithMany(p => p.ProductVariants)
+                .HasForeignKey(pv => pv.ProductId)
+                .OnDelete(DeleteBehavior.NoAction);
 
-            modelBuilder.Entity<Account>()
-                .Property(x => x.Email)
-                .IsRequired();
+            // Review -> Account relationship
+            modelBuilder.Entity<Review>()
+                .HasOne(r => r.Account)
+                .WithMany(a => a.Reviews)
+                .HasForeignKey(r => r.AccountId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Account>()
-                .Property(x => x.Password)
-                .IsRequired();
+            // Review -> Product relationship
+            modelBuilder.Entity<Review>()
+                .HasOne(r => r.Product)
+                .WithMany(p => p.Reviews)
+                .HasForeignKey(r => r.ProductId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Account>()
-                .Property(x => x.Phone_Number)
-                .IsRequired();
+            // AdminAction -> Account relationship (Admin)
+            modelBuilder.Entity<AdminAction>()
+                .HasOne(aa => aa.Account)
+                .WithMany()
+                .HasForeignKey(aa => aa.AccountId)
+                .OnDelete(DeleteBehavior.Restrict);  // Admin deletion will not remove actions
 
-            modelBuilder.Entity<Account>()
-                .Property(x => x.Shipping_Address)
-                .IsRequired();
+            // AdminAction -> Product relationship
+            modelBuilder.Entity<AdminAction>()
+                .HasOne(aa => aa.Product)
+                .WithMany(p => p.AdminActions)
+                .HasForeignKey(aa => aa.ProductId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Account>()
-                .Property(x => x.Billing_Address)
-                .IsRequired();
+            // Cart -> Account relationship
+            modelBuilder.Entity<Cart>()
+                .HasOne(c => c.Account)
+                .WithMany(a => a.Carts)
+                .HasForeignKey(c => c.AccountId)
+                .OnDelete(DeleteBehavior.NoAction);
 
-            modelBuilder.Entity<Account>()
-                .Property(x => x.Create_Date)
-                .IsRequired();
+            // Cart -> Session relationship (for guest users)
+            modelBuilder.Entity<Cart>()
+                .HasOne(c => c.Session)
+                .WithMany()
+                .HasForeignKey(c => c.SessionId)
+                .OnDelete(DeleteBehavior.NoAction);
 
-            modelBuilder.Entity<Account>()
-                .Property(x => x.Is_Active)
-                .IsRequired();
+            // CartItem -> Cart relationship
+            modelBuilder.Entity<CartItem>()
+                .HasOne(ci => ci.Cart)
+                .WithMany(c => c.CartItems)
+                .HasForeignKey(ci => ci.CartId)
+                .OnDelete(DeleteBehavior.NoAction);
 
-            modelBuilder.Entity<Account>()
-                .Property(x => x.Role)
-                .IsRequired();
+            // CartItem -> Product relationship
+            modelBuilder.Entity<CartItem>()
+                .HasOne(ci => ci.Product)
+                .WithMany()
+                .HasForeignKey(ci => ci.ProductId)
+                .OnDelete(DeleteBehavior.NoAction);
 
+            // CartItem -> ProductVariant relationship
+            modelBuilder.Entity<CartItem>()
+                .HasOne(ci => ci.ProductVariant)
+                .WithMany()
+                .HasForeignKey(ci => ci.VariantId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // Shipping -> Account relationship
+            modelBuilder.Entity<Shipping>()
+                .HasOne(s => s.Account)
+                .WithMany()
+                .HasForeignKey(s => s.AccountId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Payment -> Order relationship
+            modelBuilder.Entity<Payment>()
+                .HasOne(p => p.Order)
+                .WithMany()
+                .HasForeignKey(p => p.OrderId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Shipping>()
+                .HasOne(s => s.Order)
+                .WithMany()
+                .HasForeignKey(s => s.OrderId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+         
         }
     }
+
 }

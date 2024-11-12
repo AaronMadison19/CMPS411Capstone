@@ -3,33 +3,25 @@
     public class Session
     {
         public int Id { get; set; }
-        public int? UserId { get; set; }
-        public User? User { get; set; }
-        public DateTime Create_At { get; set; }
-        public DateTime Expires_At { get; set; }
+        public int AccountId { get; set; }  // Changed from userId to accountId
+        public DateTime CreatedAt { get; set; }
+        public DateTime ExpiresAt { get; set; }
 
+        public Account Account { get; set; }  // Updated relationship to Account instead of User
+    }
+
+    public class SessionCreateDto
+    {
+        public int AccountId { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime ExpiresAt { get; set; }
     }
 
     public class SessionGetDto
     {
         public int Id { get; set; }
-        public int? UserId { get; set; }
-        public UserGetDto User { get; set; }
-        public DateTime Create_At { get; set; }
-        public DateTime Expires_At { get; set; }
-    }
-
-    public class SessionCreateDto
-    {
-        public int? UserId { get; set; }
-        public DateTime Create_At { get; set; }
-        public DateTime Expires_At { get; set; }
-    }
-
-    public class SessionUpdateDto
-    {
-        public int? UserId { get; set; }
-        public DateTime Create_At { get; set; }
-        public DateTime Expires_At { get; set; }
+        public int AccountId { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime ExpiresAt { get; set; }
     }
 }
