@@ -6,6 +6,8 @@
         public string Type { get; set; }
 
         public ICollection<Product> Products { get; set; }
+        public ICollection<Subcategory> Subcategories { get; set; }
+
     }
 
     public class CategoryCreateDto

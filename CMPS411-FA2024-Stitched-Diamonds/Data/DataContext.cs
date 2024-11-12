@@ -189,6 +189,10 @@ namespace CMPS411_FA2024_Stitched_Diamonds.Data
                 .HasForeignKey(s => s.OrderId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<Subcategory>()
+                .HasOne(s => s.Category)
+                .WithMany(c => c.Subcategories)
+                .HasForeignKey(s => s.CategoryId);
          
         }
     }
