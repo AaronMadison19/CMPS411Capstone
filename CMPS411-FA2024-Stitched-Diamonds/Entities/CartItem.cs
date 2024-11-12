@@ -31,5 +31,16 @@
         public int VariantId { get; set; }
         public int Quantity { get; set; }
         public decimal Price { get; set; }
+        public CartGetDto Cart { get; set; }
+        public ProductGetDto Product { get; set; }
+        public ProductVariantGetDto ProductVariant { get; set; }
+    }
+
+    public class CartItemUpdateDto
+    {
+        public int ProductId { get; set; }
+        public int VariantId { get; set; }
+        public int Quantity { get; set; }
+        public decimal Price { get; set; }
     }
 }
