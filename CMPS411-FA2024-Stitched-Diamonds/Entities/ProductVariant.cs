@@ -22,6 +22,15 @@
     public class ProductVariantGetDto
     {
         public int Id { get; set; }
+        public int ProductId { get; set; }
+        public string VariantName { get; set; }
+        public string VariantValue { get; set; }
+        public decimal AdditionalPrice { get; set; }
+        public ProductGetDto Product { get; set; }
+    }
+
+    public class ProductVariantUpdateDto
+    {
         public string VariantName { get; set; }
         public string VariantValue { get; set; }
         public decimal AdditionalPrice { get; set; }
