@@ -20,22 +20,52 @@ namespace CMPS411_FA2024_Stitched_Diamonds.Controllers
         }
 
         [HttpGet]
-        public ActionResult<Response<List<Account>>> GetAllAccounts()
+        public ActionResult<Response<List<AccountGetDto>>> GetAllAccounts()
         {
-            var response = new Response<List<Account>>();
+            var response = new Response<List<AccountGetDto>>();
 
-            var accounts = _dataContext.Accounts.ToList();
+            var accounts = _dataContext.Accounts
+                .Select(p => new AccountGetDto
+                {
+                    Id = p.Id,
+                    FirstName = p.FirstName,
+                    LastName = p.LastName,
+                    Email = p.Email,
+                    Username = p.Username,
+                    PhoneNumber = p.PhoneNumber,
+                    BillingAddress = p.BillingAddress,
+                    ShippingAddress = p.ShippingAddress,
+                    CreateDate = p.CreateDate,
+                    IsActive = p.IsActive,
+                    Role = p.Role,
+                })
+                .ToList();
+
             response.Data = accounts;
-
             return Ok(response);
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Response<Account>> GetAccountById(int id)
+        public ActionResult<Response<AccountGetDto>> GetAccountById(int id)
         {
-            var response = new Response<Account>();
+            var response = new Response<AccountGetDto>();
 
-            var account = _dataContext.Accounts.FirstOrDefault(p => p.Id == id);
+            var account = _dataContext.Accounts
+                .Select(p => new AccountGetDto
+                {
+                    Id = p.Id,
+                    FirstName = p.FirstName,
+                    LastName = p.LastName,
+                    Email = p.Email,
+                    Username = p.Username,
+                    PhoneNumber = p.PhoneNumber,
+                    BillingAddress = p.BillingAddress,
+                    ShippingAddress = p.ShippingAddress,
+                    CreateDate = p.CreateDate,
+                    IsActive = p.IsActive,
+                    Role = p.Role,
+                })
+                .FirstOrDefault(account => account.Id == id);
 
             if (account == null)
             {
@@ -48,22 +78,51 @@ namespace CMPS411_FA2024_Stitched_Diamonds.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Response<Account>> CreateAccount([FromBody] Account account)
+        public ActionResult<Response<AccountGetDto>> CreateAccount([FromBody] AccountCreateDto accountDto)
         {
-            var response = new Response<Account>();
+            var response = new Response<AccountGetDto>();
 
-            // Optionally validate account data here
+            var account = new Account
+            {
+                FirstName = accountDto.FirstName,
+                LastName = accountDto.LastName,
+                Email = accountDto.Email,
+                Username = accountDto.Username,
+                Password = accountDto.Password,
+                PhoneNumber = accountDto.PhoneNumber,
+                BillingAddress = accountDto.BillingAddress,
+                ShippingAddress = accountDto.ShippingAddress,
+                Role = accountDto.Role,
+                CreateDate = accountDto.CreateDate,
+                IsActive = accountDto.IsActive,
+            };
+
             _dataContext.Accounts.Add(account);
             _dataContext.SaveChanges();
 
-            response.Data = account;
+            var createdAccountDto = new AccountGetDto
+            {
+                Id = account.Id,
+                FirstName = accountDto.FirstName,
+                LastName = accountDto.LastName,
+                Email = accountDto.Email,
+                Username= accountDto.Username,
+                PhoneNumber= accountDto.PhoneNumber,
+                BillingAddress= accountDto.BillingAddress,
+                ShippingAddress= accountDto.ShippingAddress,
+                Role = accountDto.Role,
+                CreateDate = accountDto.CreateDate,
+                IsActive = accountDto.IsActive,
+            };
+
+            response.Data = createdAccountDto;
             return CreatedAtAction(nameof(GetAccountById), new { id = account.Id }, response);
         }
 
         [HttpPut("{id}")]
-        public ActionResult<Response<Account>> UpdateAccount(int id, [FromBody] Account accountUpdate)
+        public ActionResult<Response<AccountGetDto>> UpdateAccount(int id, [FromBody] AccountUpdateDto accountDto)
         {
-            var response = new Response<Account>();
+            var response = new Response<AccountGetDto>();
 
             var account = _dataContext.Accounts.FirstOrDefault(p => p.Id == id);
 
@@ -73,21 +132,32 @@ namespace CMPS411_FA2024_Stitched_Diamonds.Controllers
                 return NotFound(response);
             }
 
-            account.First_Name = accountUpdate.First_Name;
-            account.Last_Name = accountUpdate.Last_Name;
-            account.Email = accountUpdate.Email;
-            account.Username = accountUpdate.Username;
-            account.Password = accountUpdate.Password;
-            account.Phone_Number = accountUpdate.Phone_Number;
-            account.Billing_Address = accountUpdate.Billing_Address;
-            account.Shipping_Address = accountUpdate.Shipping_Address;
-            account.Create_Date = accountUpdate.Create_Date;
-            account.Is_Active = accountUpdate.Is_Active;
-            account.Role = accountUpdate.Role;
-
+            account.FirstName = accountDto.FirstName;
+            account.LastName = accountDto.LastName;
+            account.Email = accountDto.Email;
+            account.Username = accountDto.Username;
+            account.PhoneNumber = accountDto.PhoneNumber;
+            account.BillingAddress = accountDto.BillingAddress;
+            account.ShippingAddress = accountDto.ShippingAddress;
+            account.Password = accountDto.Password;
             _dataContext.SaveChanges();
 
-            response.Data = account;
+            var updatedAccountDto = new AccountGetDto
+            {
+                Id = account.Id,
+                FirstName = account.FirstName,
+                LastName = account.LastName,
+                Email = account.Email,
+                Username = account.Username,
+                PhoneNumber = account.PhoneNumber,
+                BillingAddress = account.BillingAddress,
+                ShippingAddress = account.ShippingAddress,
+                CreateDate = account.CreateDate,
+                IsActive = account.IsActive,
+                Role = account.Role,
+            };
+
+            response.Data = updatedAccountDto;
             return Ok(response);
         }
 

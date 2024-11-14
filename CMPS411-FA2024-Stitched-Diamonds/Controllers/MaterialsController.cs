@@ -20,22 +20,41 @@ namespace CMPS411_FA2024_Stitched_Diamonds.Controllers
         }
 
         [HttpGet]
-        public ActionResult<Response<List<Material>>> GetAllMaterials()
+        public ActionResult<Response<List<MaterialGetDto>>> GetAllMaterials()
         {
-            var response = new Response<List<Material>>();
+            var response = new Response<List<MaterialGetDto>>();
 
-            var materials = _dataContext.Materials.ToList();
+            var materials = _dataContext.Materials
+                .Select(p => new MaterialGetDto
+                {
+                    Id = p.Id,
+                    Type = p.Type,
+                    IsAllergenFree = p.IsAllergenFree,
+                    QuantityInStock = p.QuantityInStock,
+                    Cost = p.Cost,
+                })
+                .ToList();
+
             response.Data = materials;
-
             return Ok(response);
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Response<Material>> GetMaterialById(int id)
+        public ActionResult<Response<MaterialGetDto>> GetMaterialById(int id)
         {
-            var response = new Response<Material>();
+            var response = new Response<MaterialGetDto>();
 
-            var material = _dataContext.Materials.FirstOrDefault(p => p.Id == id);
+            var material = _dataContext.Materials
+                .Where(p => p.Id == id)
+                .Select(p => new MaterialGetDto
+                {
+                    Id = p.Id,
+                    Type = p.Type,
+                    IsAllergenFree = p.IsAllergenFree,
+                    QuantityInStock = p.QuantityInStock,
+                    Cost = p.Cost,
+                })
+                .FirstOrDefault(material => material.Id == id);
 
             if (material == null)
             {
@@ -48,22 +67,38 @@ namespace CMPS411_FA2024_Stitched_Diamonds.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Response<Material>> CreateMaterial([FromBody] Material material)
+        public ActionResult<Response<MaterialGetDto>> CreateMaterial([FromBody] MaterialCreateDto materialDto)
         {
-            var response = new Response<Material>();
+            var response = new Response<MaterialGetDto>();
 
-            // Optionally validate product data here
+            var material = new Material
+            {
+                Type = materialDto.Type,
+                IsAllergenFree = materialDto.IsAllergenFree,
+                QuantityInStock = materialDto.QuantityInStock,
+                Cost = materialDto.Cost,
+            };
+
             _dataContext.Materials.Add(material);
             _dataContext.SaveChanges();
 
-            response.Data = material;
+            var createdMaterialDto = new MaterialGetDto
+            {
+                Id = material.Id,
+                Type = material.Type,
+                IsAllergenFree = material.IsAllergenFree,
+                QuantityInStock = material.QuantityInStock,
+                Cost = material.Cost,
+            };
+
+            response.Data = createdMaterialDto;
             return CreatedAtAction(nameof(GetMaterialById), new { id = material.Id }, response);
         }
 
         [HttpPut("{id}")]
-        public ActionResult<Response<Material>> UpdateMaterial(int id, [FromBody] Material materialUpdate)
+        public ActionResult<Response<MaterialGetDto>> UpdateMaterial(int id, [FromBody] MaterialUpdateDto materialDto)
         {
-            var response = new Response<Material>();
+            var response = new Response<MaterialGetDto>();
 
             var material = _dataContext.Materials.FirstOrDefault(p => p.Id == id);
 
@@ -73,13 +108,22 @@ namespace CMPS411_FA2024_Stitched_Diamonds.Controllers
                 return NotFound(response);
             }
 
-            material.Type = materialUpdate.Type;
-            material.Is_Allergen_Free = materialUpdate.Is_Allergen_Free;
-            material.Quantity_In_Stock = materialUpdate.Quantity_In_Stock;
-
+            material.Type = materialDto.Type;
+            material.IsAllergenFree = materialDto.IsAllergenFree;
+            material.QuantityInStock = materialDto.QuantityInStock;
+            material.Cost = materialDto.Cost;
             _dataContext.SaveChanges();
 
-            response.Data = material;
+            var updatedMaterialDto = new MaterialGetDto
+            {
+                Id = material.Id,
+                Type = material.Type,
+                IsAllergenFree = material.IsAllergenFree,
+                QuantityInStock = materialDto.QuantityInStock,
+                Cost = materialDto.Cost,
+            };
+
+            response.Data = updatedMaterialDto;
             return Ok(response);
         }
 

@@ -20,22 +20,53 @@ namespace CMPS411_FA2024_Stitched_Diamonds.Controllers
         }
 
         [HttpGet]
-        public ActionResult<Response<List<Order>>> GetAllOrders()
+        public ActionResult<Response<List<OrderGetDto>>> GetAllOrders()
         {
-            var response = new Response<List<Order>>();
+            var response = new Response<List<OrderGetDto>>();
 
-            var orders = _dataContext.Orders.ToList();
+            var orders = _dataContext.Orders
+                .Include(p => p.Account)
+                .Include(p => p.Session)
+                .Select(p => new OrderGetDto
+                {
+                    Id = p.Id,
+                    OrderDate = p.OrderDate,
+                    OrderNumber = p.OrderNumber,
+                    TotalPrice = p.TotalPrice,
+                    PaymentMethod = p.PaymentMethod,
+                    PaymentStatus = p.PaymentStatus,
+                    OrderStatus = p.OrderStatus,
+                    AccountId = p.AccountId,
+                    SessionId = p.SessionId,
+                })
+                .ToList();
+
             response.Data = orders;
-
             return Ok(response);
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Response<Order>> GetOrderById(int id)
+        public ActionResult<Response<OrderGetDto>> GetOrderById(int id)
         {
-            var response = new Response<Order>();
+            var response = new Response<OrderGetDto>();
 
-            var order = _dataContext.Orders.FirstOrDefault(p => p.Id == id);
+            var order = _dataContext.Orders
+                .Include(p => p.Account)
+                .Include(p => p.Session)
+                .Where(p => p.Id == id)
+                .Select(p => new OrderGetDto
+                {
+                    Id = p.Id,
+                    OrderDate = p.OrderDate,
+                    OrderNumber = p.OrderNumber,
+                    TotalPrice = p.TotalPrice,
+                    PaymentMethod = p.PaymentMethod,
+                    PaymentStatus = p.PaymentStatus,
+                    OrderStatus = p.OrderStatus,
+                    AccountId = p.AccountId,
+                    SessionId = p.SessionId,
+                })
+                .FirstOrDefault(order => order.Id == id);
 
             if (order == null)
             {
@@ -48,22 +79,46 @@ namespace CMPS411_FA2024_Stitched_Diamonds.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Response<Order>> CreateOrder([FromBody] Order order)
+        public ActionResult<Response<OrderGetDto>> CreateOrder([FromBody] OrderCreateDto orderDto)
         {
-            var response = new Response<Order>();
+            var response = new Response<OrderGetDto>();
 
-            // Optionally validate order data here
+            var order = new Order
+            {
+                OrderDate = orderDto.OrderDate,
+                OrderNumber = orderDto.OrderNumber,
+                TotalPrice = orderDto.TotalPrice,
+                PaymentMethod = orderDto.PaymentMethod,
+                PaymentStatus = orderDto.PaymentStatus,
+                OrderStatus = orderDto.OrderStatus,
+                AccountId = orderDto.AccountId,
+                SessionId = orderDto.SessionId,
+            };
+
             _dataContext.Orders.Add(order);
             _dataContext.SaveChanges();
 
-            response.Data = order;
+            var createdOrderDto = new OrderGetDto
+            {
+                Id = order.Id,
+                OrderDate = order.OrderDate,
+                OrderNumber = order.OrderNumber,
+                TotalPrice = order.TotalPrice,
+                PaymentMethod = order.PaymentMethod,
+                PaymentStatus = order.PaymentStatus,
+                OrderStatus = order.OrderStatus,
+                AccountId = order.AccountId,
+                SessionId = order.SessionId,
+            };
+
+            response.Data = createdOrderDto;
             return CreatedAtAction(nameof(GetOrderById), new { id = order.Id }, response);
         }
 
         [HttpPut("{id}")]
-        public ActionResult<Response<Order>> UpdateOrder(int id, [FromBody] Order orderUpdate)
+        public ActionResult<Response<OrderGetDto>> UpdateOrder(int id, [FromBody] OrderUpdateDto orderDto)
         {
-            var response = new Response<Order>();
+            var response = new Response<OrderGetDto>();
 
             var order = _dataContext.Orders.FirstOrDefault(p => p.Id == id);
 
@@ -73,14 +128,24 @@ namespace CMPS411_FA2024_Stitched_Diamonds.Controllers
                 return NotFound(response);
             }
 
-            order.Date = orderUpdate.Date;
-            order.Number = orderUpdate.Number;
-            order.Total_Price = orderUpdate.Total_Price;
-            order.Payment_Method = orderUpdate.Payment_Method;
-
+            order.OrderStatus = orderDto.OrderStatus;
+            order.PaymentStatus = orderDto.PaymentStatus;
             _dataContext.SaveChanges();
 
-            response.Data = order;
+            var updatedOrderDto = new OrderGetDto
+            {
+                Id = order.Id,
+                OrderDate = order.OrderDate,
+                OrderNumber = order.OrderNumber,
+                TotalPrice = order.TotalPrice,
+                PaymentMethod = order.PaymentMethod,
+                PaymentStatus = order.PaymentStatus,
+                OrderStatus = order.OrderStatus,
+                AccountId = order.AccountId,
+                SessionId = order.SessionId,
+            };
+
+            response.Data = updatedOrderDto;
             return Ok(response);
         }
 

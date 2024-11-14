@@ -20,22 +20,57 @@ namespace CMPS411_FA2024_Stitched_Diamonds.Controllers
         }
 
         [HttpGet]
-        public ActionResult<Response<List<Product>>> GetAllProducts()
+        public ActionResult<Response<List<ProductGetDto>>> GetAllProducts()
         {
-            var response = new Response<List<Product>>();
+            var response = new Response<List<ProductGetDto>>();
 
-            var products = _dataContext.Products.ToList();
+            var products = _dataContext.Products
+                .Include(p => p.Category)
+                .Include(p => p.Subcategory)
+                .Include(p => p.Material)
+                .Select(p => new ProductGetDto
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Description = p.Description,
+                    Price = p.Price,
+                    Details = p.Details,
+                    ImageUrl = p.ImageUrl,
+                    CategoryId = p.CategoryId,
+                    SubcategoryId = p.SubcategoryId,
+                    MaterialId = p.MaterialId,
+                    QuantityInStock = p.QuantityInStock
+                })
+                .ToList();
+
             response.Data = products;
-
             return Ok(response);
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Response<Product>> GetProductById(int id)
+        public ActionResult<Response<ProductGetDto>> GetProductById(int id)
         {
-            var response = new Response<Product>();
+            var response = new Response<ProductGetDto>();
 
-            var product = _dataContext.Products.FirstOrDefault(p => p.Id == id);
+            var product = _dataContext.Products
+                .Include(p => p.Category)
+                .Include(p => p.Subcategory)
+                .Include(p => p.Material)
+                .Where(p => p.Id == id)
+                .Select(p => new ProductGetDto
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Description = p.Description,
+                    Price = p.Price,
+                    Details = p.Details,
+                    ImageUrl = p.ImageUrl,
+                    CategoryId = p.CategoryId,
+                    SubcategoryId = p.SubcategoryId,
+                    MaterialId = p.MaterialId,
+                    QuantityInStock = p.QuantityInStock
+                })
+                .FirstOrDefault(product => product.Id == id);
 
             if (product == null)
             {
@@ -48,22 +83,47 @@ namespace CMPS411_FA2024_Stitched_Diamonds.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Response<Product>> CreateProduct([FromBody] Product product)
+        public ActionResult<Response<ProductGetDto>> CreateProduct([FromBody] ProductCreateDto productDto)
         {
-            var response = new Response<Product>();
+            var response = new Response<ProductGetDto>();
 
-            // Optionally validate product data here
+            var product = new Product
+            {
+                Name = productDto.Name,
+                Description = productDto.Description,
+                Price = productDto.Price,
+                CategoryId = productDto.CategoryId,
+                Details = productDto.Details,
+                ImageUrl = productDto.ImageUrl,
+                SubcategoryId = productDto.SubcategoryId,
+                MaterialId = productDto.MaterialId,
+                QuantityInStock = productDto.QuantityInStock
+            };
+
             _dataContext.Products.Add(product);
             _dataContext.SaveChanges();
 
-            response.Data = product;
+            var createdProductDto = new ProductGetDto
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Description = product.Description,
+                Price = product.Price,
+                ImageUrl = product.ImageUrl,
+                CategoryId = product.CategoryId,
+                SubcategoryId = product.SubcategoryId,
+                MaterialId = product.MaterialId,
+                QuantityInStock = product.QuantityInStock
+            };
+
+            response.Data = createdProductDto;
             return CreatedAtAction(nameof(GetProductById), new { id = product.Id }, response);
         }
 
         [HttpPut("{id}")]
-        public ActionResult<Response<Product>> UpdateProduct(int id, [FromBody] Product productUpdate)
+        public ActionResult<Response<ProductGetDto>> UpdateProduct(int id, [FromBody] ProductUpdateDto productDto)
         {
-            var response = new Response<Product>();
+            var response = new Response<ProductGetDto>();
 
             var product = _dataContext.Products.FirstOrDefault(p => p.Id == id);
 
@@ -73,16 +133,30 @@ namespace CMPS411_FA2024_Stitched_Diamonds.Controllers
                 return NotFound(response);
             }
 
-            product.Name = productUpdate.Name;
-            product.Description = productUpdate.Description;
-            product.Price = productUpdate.Price;
-            product.ImageUrl = productUpdate.ImageUrl;
-            product.Details = productUpdate.Details;
-            product.Quantity_In_Stock = productUpdate.Quantity_In_Stock;
-
+            product.Name = productDto.Name;
+            product.Description = productDto.Description;
+            product.Price = productDto.Price;
+            product.ImageUrl = productDto.ImageUrl;
+            product.CategoryId = productDto.CategoryId;
+            product.SubcategoryId = productDto.SubcategoryId;
+            product.MaterialId = productDto.MaterialId;
+            product.QuantityInStock = productDto.QuantityInStock;
             _dataContext.SaveChanges();
 
-            response.Data = product;
+            var updatedProductDto = new ProductGetDto
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Description = product.Description,
+                Price = product.Price,
+                ImageUrl = product.ImageUrl,
+                CategoryId = product.CategoryId,
+                SubcategoryId = product.SubcategoryId,
+                MaterialId = product.MaterialId,
+                QuantityInStock = product.QuantityInStock
+            };
+
+            response.Data = updatedProductDto;
             return Ok(response);
         }
 

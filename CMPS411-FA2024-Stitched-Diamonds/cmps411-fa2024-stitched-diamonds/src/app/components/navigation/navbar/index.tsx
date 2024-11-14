@@ -34,11 +34,8 @@ const Navbar = () => {
       </li>
 
       <li className={styles.navbar}>
-        <Link href="/account">
-        Account
-        </Link>
+        <Link href="/account">Account</Link>
       </li>
-      
     </ul>
   );
 };
