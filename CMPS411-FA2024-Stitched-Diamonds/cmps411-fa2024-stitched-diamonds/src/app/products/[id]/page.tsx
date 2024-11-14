@@ -14,7 +14,7 @@ type Product = {
   price: number;
   imageUrl: string;
   details: string;
-  quantity_In_Stock: number;
+  quantityInStock: number;
 };
 
 const ProductPage = async ({ params }: { params: { id: string } }) => {
@@ -43,7 +43,7 @@ const ProductPage = async ({ params }: { params: { id: string } }) => {
         <p>{product.description}</p>
         <p>${product.price}</p>
         <p>{product.details}</p>
-        <p>Quantity: {product.quantity_In_Stock}</p>
+        <p>Quantity: {product.quantityInStock}</p>
         </div>
         <div className={styles.imageContainer}>
             <img src={product.imageUrl} alt={product.name} />
