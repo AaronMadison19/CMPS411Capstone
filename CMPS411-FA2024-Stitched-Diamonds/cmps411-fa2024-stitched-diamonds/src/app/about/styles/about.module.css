@@ -1,80 +1,132 @@
 /* General Container */
 .aboutContainer {
-    max-width: 1200px; /* Limits the width of the content */
-    margin: 0 auto; /* Centers the content horizontally */
-    padding: 20px;
-    background-color: var(--background-primary); /* Background color for the whole section */
-    color: black; /* Change text color to black for better visibility */
-  }
-  
-  /* Hero Section */
-  .heroSection {
-    text-align: center;
-    padding: 40px 0;
-    background-color: var(--background-secondary); /* Background color for hero section */
-    margin-bottom: 30px;
-    border-radius: 12px; /* Rounded corners */
-  }
-  
-  .heroTitle {
-    font-size: 36px;
-    font-weight: bold;
-    color: black; /* Change to black */
-    margin-bottom: 10px;
-  }
-  
-  .heroSubtitle {
-    font-size: 18px;
-    color: black; /* Change to black */
-  }
-  
-  /* Section Title */
-  .sectionTitle {
-    font-size: 28px;
-    margin-bottom: 15px;
-    font-weight: bold;
-    color: black; /* Change to black */
-    text-align: center;
-  }
-  
-  /* Section Text */
-  .sectionText {
-    font-size: 16px;
-    line-height: 1.6;
-    color: black; /* Change to black */
-    max-width: 800px;
-    margin: 0 auto; /* Centers the text within the section */
-    text-align: center;
-    margin-bottom: 40px;
-  }
-  
-  /* Values Section */
-  .valuesSection {
-    text-align: center;
-  }
-  
+  max-width: 900px; /* Reduced width for tighter layout */
+  margin: 0 auto;
+  padding: 20px 10px; /* Tightened padding */
+  background-color: var(--background-primary);
+  color: black;
+  line-height: 1.4; /* Adjusted line height for compactness */
+}
+
+/* Hero Section */
+.heroSection {
+  text-align: center;
+  padding: 5px 0; /* Further reduced padding for less space above and below */
+  margin-bottom: 5px; /* Reduced bottom margin to pull up content */
+}
+
+/* Increased the size of the header */
+.heroTitle {
+  font-size: 60px; /* Increased size for more emphasis */
+  font-weight: bold;
+  color: black;
+  margin: 0; /* Removed margin to reduce space */
+}
+
+.heroSubtitle {
+  font-size: 24px; /* Increased size for better visibility */
+  color: black;
+  margin: 5px 0; /* Reduced margin for tighter spacing */
+}
+
+/* Horizontal Sections */
+.horizontalSections {
+  display: flex; /* Flex layout for horizontal alignment */
+  justify-content: space-between; /* Equal spacing between sections */
+  margin-bottom: 20px; /* Space below the horizontal sections */
+}
+
+.sectionCard {
+  flex: 1; /* Equal width for each section */
+  margin: 0 10px; /* Margin between sections */
+  background-color: white; /* White background for contrast */
+  padding: 15px; /* Padding for inner content */
+  border: 2px solid var(--background-secondary); /* Standardized border */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); /* Soft shadow */
+}
+
+/* Section Title */
+.sectionTitle {
+  font-size: 24px; /* Smaller for better proportion */
+  margin-bottom: 10px; /* Reduced margin */
+  font-weight: bold;
+  color: black;
+  text-align: center;
+}
+
+.sectionTitle::after {
+  content: '';
+  width: 50px; /* Reduced underline size */
+  height: 3px; /* Consistent thickness */
+  background-color: var(--text-primary);
+  display: block;
+  margin: 5px auto; /* Tightened margin */
+}
+
+/* Section Text */
+.sectionText {
+  font-size: 14px; /* Reduced for a more compact look */
+  line-height: 1.4; /* Adjusted line height */
+  color: black;
+  margin: 0 auto;
+  text-align: center;
+  margin-bottom: 20px; /* Reduced spacing for consistency */
+}
+
+/* Values Section */
+.valuesSection {
+  text-align: center;
+  margin-bottom: 20px; /* Tightened spacing */
+}
+
+.valuesList {
+  list-style-type: disc; /* Added bullet points */
+  padding-left: 20px; /* Space for bullet points */
+  margin: 0 auto;
+  max-width: 500px; /* Reduced for compactness */
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 15px; /* Tightened gap */
+}
+
+.valuesList li {
+  background-color: white; /* White background for contrast */
+  padding: 15px; /* Padding for inner content */
+  font-size: 14px; /* Consistent font size */
+  color: black;
+  font-weight: bold;
+}
+
+/* Team Section */
+.teamSection {
+  margin-top: 10px; /* Reduced top margin */
+  margin-bottom: 10px; /* Reduced bottom margin */
+  padding: 10px; /* Reduced padding for tighter layout */
+  background-color: white; /* White background for contrast */
+  border: 2px solid var(--background-secondary); /* Standardized border */
+  border-radius: 8px; /* Standardized border radius */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  width: calc(100% + 20px); /* Full width matching the combined boxes above */
+  margin-left: -10px; /* Align with horizontal sections */
+  min-height: 150px; /* Minimum height for consistency */
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
   .valuesList {
-    list-style: none; /* Removes bullet points */
-    padding: 0;
-    margin: 0 auto;
-    max-width: 600px; /* Limits the width of the values list */
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* Creates a two-column layout */
-    grid-gap: 20px; /* Adds space between the list items */
+    grid-template-columns: 1fr; /* Single column on smaller screens */
   }
-  
-  .valuesList li {
-    background-color: var(--background-secondary); /* Each value gets a background */
-    padding: 20px;
-    border-radius: 8px; /* Rounds the corners of each value box */
-    font-size: 16px;
-    color: black; /* Change to black */
-    font-weight: bold;
+
+  .heroTitle {
+    font-size: 36px; /* Adjusted for smaller screens */
   }
-  
-  /* Team Section */
-  .teamSection {
-    margin-top: 60px;
-    text-align: center;
+
+  .sectionTitle {
+    font-size: 22px; /* Smaller title */
   }
-  
+
+  .sectionText {
+    font-size: 12px; /* Smaller text */
+  }
+}
