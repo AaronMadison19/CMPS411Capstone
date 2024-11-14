@@ -1,6 +1,7 @@
 import axios from 'axios';
 import https from 'https';
 import { useRouter } from 'next/navigation';
+import styles from '../../styles/page.module.css';
 
 const httpsAgent = new https.Agent({
   rejectUnauthorized: false,
@@ -13,6 +14,7 @@ type Product = {
   price: number;
   imageUrl: string;
   details: string;
+  quantity_In_Stock: number;
 };
 
 const ProductPage = async ({ params }: { params: { id: string } }) => {
@@ -27,18 +29,25 @@ const ProductPage = async ({ params }: { params: { id: string } }) => {
     // Access product data from the correct field
     const product = res.data.data;
 
+    console.log(product);
+
     if (!product) {
       return <div>Product not found</div>;
     }
 
     // Render product details
     return (
-      <div>
+      <div className={styles.container}>
+        <div className={styles.details}>
         <h1>{product.name}</h1>
-        <img src={product.imageUrl} alt={product.name} />
         <p>{product.description}</p>
         <p>${product.price}</p>
         <p>{product.details}</p>
+        <p>Quantity: {product.quantity_In_Stock}</p>
+        </div>
+        <div className={styles.imageContainer}>
+            <img src={product.imageUrl} alt={product.name} />
+        </div>
       </div>
     );
   } catch (error) {

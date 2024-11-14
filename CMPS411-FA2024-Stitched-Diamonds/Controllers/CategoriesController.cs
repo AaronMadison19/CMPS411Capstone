@@ -20,82 +20,124 @@ namespace CMPS411_FA2024_Stitched_Diamonds.Controllers
         }
 
         [HttpGet]
-        public ActionResult<Response<List<Categories>>> GetAllCategories()
+        public ActionResult<Response<List<CategoryGetDto>>> GetAllCategories()
         {
-            var response = new Response<List<Categories>>();
+            var response = new Response<List<CategoryGetDto>>();
 
-            var categories = _dataContext.Categories.ToList();
+            var categories = _dataContext.Categories
+                .Select(p => new CategoryGetDto
+                {
+                    Id = p.Id,
+                    Type = p.Type,
+                })
+                .ToList();
+
             response.Data = categories;
-
             return Ok(response);
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Response<Categories>> GetCategoriesById(int id)
+        public ActionResult<Response<CategoryGetDto>> GetCategoryById(int id)
         {
-            var response = new Response<Categories>();
+            var response = new Response<CategoryGetDto>();
 
-            var categories = _dataContext.Categories.FirstOrDefault(p => p.Id == id);
+            var category = _dataContext.Categories
+                .Include(p => p.Products)
+                .Where(p => p.Id == id)
+                .Select(p => new CategoryGetDto
+                {
+                    Id = p.Id,
+                    Type = p.Type,
+                    Products = p.Products.Select(p => new ProductGetDto
+                    {
+                        Id = p.Id,
+                        Name = p.Name,
+                        Description = p.Description,
+                        Price = p.Price,
+                        CategoryId = p.CategoryId,
+                        SubcategoryId = p.SubcategoryId,
+                        Details = p.Details,
+                        MaterialId = p.MaterialId,
+                        QuantityInStock = p.QuantityInStock,
+                        ImageUrl = p.ImageUrl
 
-            if (categories == null)
+                    }).ToList(),
+                })
+                .FirstOrDefault(category => category.Id == id);
+
+            if (category == null)
             {
                 response.AddError("id", "Category not found");
                 return NotFound(response);
             }
 
-            response.Data = categories;
+            response.Data = category;
             return Ok(response);
         }
 
         [HttpPost]
-        public ActionResult<Response<Categories>> CreateCategories([FromBody] Categories categories)
+        public ActionResult<Response<CategoryGetDto>> CreateCategory([FromBody] CategoryCreateDto categoryDto)
         {
-            var response = new Response<Categories>();
+            var response = new Response<CategoryGetDto>();
 
-            // Optionally validate product data here
-            _dataContext.Categories.Add(categories);
+            var category = new Category
+            {
+                Type = categoryDto.Type,
+            };
+
+            _dataContext.Categories.Add(category);
             _dataContext.SaveChanges();
 
-            response.Data = categories;
-            return CreatedAtAction(nameof(GetCategoriesById), new { id = categories.Id }, response);
+            var createdCategoryDto = new CategoryGetDto
+            {
+                Id = category.Id,
+                Type = category.Type,
+            };
+
+            response.Data = createdCategoryDto;
+            return CreatedAtAction(nameof(GetCategoryById), new { id = category.Id }, response);
         }
 
         [HttpPut("{id}")]
-        public ActionResult<Response<Categories>> UpdateCategories(int id, [FromBody] Categories categoriesUpdate)
+        public ActionResult<Response<CategoryGetDto>> UpdateCategory(int id, [FromBody] CategoryUpdateDto categoryDto)
         {
-            var response = new Response<Categories>();
+            var response = new Response<CategoryGetDto>();
 
-            var categories = _dataContext.Categories.FirstOrDefault(p => p.Id == id);
+            var category = _dataContext.Categories.FirstOrDefault(p => p.Id == id);
 
-            if (categories == null)
+            if (category == null)
             {
                 response.AddError("id", "Category not found");
                 return NotFound(response);
             }
 
-            categories.Type = categoriesUpdate.Type;
-            categories.Category_Type = categoriesUpdate.Category_Type;
-
+            category.Type = categoryDto.Type;
             _dataContext.SaveChanges();
 
-            response.Data = categories;
+            var updatedCategoryDto = new CategoryGetDto
+            {
+                Id = category.Id,
+                Type = category.Type,
+            };
+
+            response.Data = updatedCategoryDto;
             return Ok(response);
         }
 
         [HttpDelete("{id}")]
-        public ActionResult<Response<bool>> DeleteCategories(int id)
+        public ActionResult<Response<bool>> DeleteCategory(int id)
         {
             var response = new Response<bool>();
 
-            var categories = _dataContext.Categories.FirstOrDefault(p => p.Id == id);
+            var category = _dataContext.Categories.FirstOrDefault(p => p.Id == id);
 
-            if (categories == null)
+            if (category == null)
             {
-                response.AddError("id", "Categories not found");
+                response.AddError("id", "Category not found");
                 return NotFound(response);
             }
 
-            _dataContext.Categories.Remove(categories);
+            _dataContext.Categories.Remove(category);
             _dataContext.SaveChanges();
 
             response.Data = true;

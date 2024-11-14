@@ -1,92 +1,85 @@
 /* General Styles */
 .loginContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f0f4f8;
-    padding: 0 20px;
-  }
-  
-  .formWrapper {
-    background-color: #fff;
-    padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-    width: 100%;
-    max-width: 400px;
-    text-align: center;
-  }
-  
-  .formWrapper h2 { /* Updated to use a local class */
-    margin-bottom: 20px;
-    font-size: 24px;
-    color: #333;
-  }
-  
-  /* Form Styling */
-  .loginForm {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .formGroup {
-    margin-bottom: 20px;
-    text-align: left;
-  }
-  
-  .formGroup label { /* Updated to use a local class */
-    display: block;
-    font-size: 14px;
-    margin-bottom: 5px;
-    color: #333;
-  }
-  
-  .formGroup input[type="text"],
-  .formGroup input[type="password"] {
-    width: 100%;
-    padding: 12px 16px;
-    font-size: 14px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    transition: border-color 0.3s ease;
-  }
-  
-  .formGroup input[type="text"]:focus,
-  .formGroup input[type="password"]:focus {
-    border-color: #007bff;
-  }
-  
-  /* Button Styling */
-  .submitButton {
-    padding: 12px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .submitButton:hover {
-    background-color: #0056b3;
-  }
-  
-  /* Footer Text */
-  .signupPrompt {
-    margin-top: 20px;
-    font-size: 14px;
-    color: #555;
-  }
-  
-  .signupLink {
-    color: #007bff;
-    text-decoration: none;
-  }
-  
-  .signupLink:hover {
-    text-decoration: underline;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  background-color: var(--background-primary);
+  padding: 0 20px;
+}
+
+.formWrapper {
+  background-color: var(--background-secondary);
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px var(--background-drop-shadow);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.formWrapper h2 { /* Updated to use a local class */
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: var(--foreground-primary);
+}
+
+/* Form Styling */
+.loginForm {
+  display: flex;
+  flex-direction: column;
+}
+
+.formGroup {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.formGroup label { /* Updated to use a local class */
+  display: block;
+  font-size: 18px;
+  margin-bottom: 5px;
+  color: var(--foreground-primary);
+}
+
+.formGroup input {
+  width: 100%;
+  height: 24pt;
+  font-size: 14px;
+  border: 1px solid var(--background-drop-shadow);
+  border-radius: 8px;
+  background-color: var(--background-primary);
+}
+
+/* Button Styling */
+.submitButton {
+  padding: 12px 20px;
+  background-color: var(--foreground-link);
+  color: var(--foreground-primary);
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submitButton:hover {
+  background-color: var(--foreground-link-hover);
+}
+
+/* Footer Text */
+.signupPrompt {
+  margin-top: 20px;
+  font-size: 14px;
+  color: var(--foreground-primary);
+}
+
+.signupLink {
+  color: var(--foreground-link);
+  text-decoration: none;
+}
+
+.signupLink:hover {
+  color: var(--foreground-link-hover);
+}
   

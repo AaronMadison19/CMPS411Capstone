@@ -4,7 +4,35 @@
     {
         public int Id { get; set; }
         public string Type { get; set; }
-        public bool Is_Allergen_Free { get; set; }
-        public int Quantity_In_Stock { get; set; }
+        public bool IsAllergenFree { get; set; }
+        public int QuantityInStock { get; set; }
+        public decimal Cost { get; set; }
+
+        public ICollection<Product> Products { get; set; }
+    }
+
+    public class MaterialCreateDto
+    {
+        public string Type { get; set; }
+        public bool IsAllergenFree { get; set; }
+        public int QuantityInStock { get; set; }
+        public decimal Cost { get; set; }
+    }
+
+    public class MaterialGetDto
+    {
+        public int Id { get; set; }
+        public string Type { get; set; }
+        public bool IsAllergenFree { get; set; }
+        public int QuantityInStock { get; set; }
+        public decimal Cost { get; set; }
+    }
+
+    public class MaterialUpdateDto
+    {
+        public string Type { get; set; }
+        public bool IsAllergenFree { get; set; }
+        public int QuantityInStock { get; set; }
+        public decimal Cost { get; set; }
     }
 }
