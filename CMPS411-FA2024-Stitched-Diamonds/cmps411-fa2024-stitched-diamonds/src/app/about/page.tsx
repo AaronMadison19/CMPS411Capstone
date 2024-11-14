@@ -68,29 +68,29 @@ const About: React.FC = () => {
           </div>
 
           {/* Developers Section */}
-          <div className="flex justify-center space-x-8">
+          <div className="container mx-auto px-9 py-16 grid grid-cols-1 md:grid-cols-5 gap-8">
             <div className="bg-white shadow-xl rounded-lg p-6 w-64">
-              <img src="https://via.placeholder.com/150" alt="Team Member" className="rounded-full mx-auto mb-4" />
+              <img src="https://via.placeholder.com/100" alt="Team Member" className="rounded-full mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-gray-800">Aaron Madison</h3>
               <p className="text-gray-600">Developer</p>
             </div>
             <div className="bg-white shadow-xl rounded-lg p-6 w-64">
-              <img src="https://via.placeholder.com/150" alt="Team Member" className="rounded-full mx-auto mb-4" />
+              <img src="https://via.placeholder.com/100" alt="Team Member" className="rounded-full mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-gray-800">Alex Chaplain</h3>
               <p className="text-gray-600">Developer</p>
             </div>
             <div className="bg-white shadow-xl rounded-lg p-6 w-64">
-              <img src="https://via.placeholder.com/150" alt="Team Member" className="rounded-full mx-auto mb-4" />
+              <img src="https://via.placeholder.com/100" alt="Team Member" className="rounded-full mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-gray-800">Caleb Patrick</h3>
               <p className="text-gray-600">Developer</p>
             </div>
             <div className="bg-white shadow-xl rounded-lg p-6 w-64">
-              <img src="https://via.placeholder.com/150" alt="Team Member" className="rounded-full mx-auto mb-4" />
+              <img src="https://via.placeholder.com/100" alt="Team Member" className="rounded-full mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-gray-800">Jake Sasser</h3>
               <p className="text-gray-600">Developer</p>
             </div>
             <div className="bg-white shadow-xl rounded-lg p-6 w-64">
-              <img src="https://via.placeholder.com/150" alt="Team Member" className="rounded-full mx-auto mb-4" />
+              <img src="https://via.placeholder.com/100" alt="Team Member" className="rounded-full mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-gray-800">Wonda White</h3>
               <p className="text-gray-600">Developer</p>
             </div>
