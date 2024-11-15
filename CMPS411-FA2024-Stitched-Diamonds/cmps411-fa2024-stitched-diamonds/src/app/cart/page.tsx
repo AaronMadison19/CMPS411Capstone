@@ -1,12 +1,15 @@
 "use client";
-import { CheckIcon, ClockIcon } from "@heroicons/react/20/solid";
+import { ClockIcon } from "@heroicons/react/20/solid";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
 
 interface CartItem {
   id: number;
-  name: string;
-  description: string;
+  cartId: number;
+  productId: number;
+  variantId: number;
+  quantity: number;
   price: number;
 }
 
@@ -14,14 +17,19 @@ export default function CartItemList() {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
   useEffect(() => {
-    axios
-      .get("https://localhost7201/api/cartItems")
-      .then((response) => {
-        setCartItems(response.data);
-      })
-      .catch((error) => {
+    const fetchCart = async () => {
+      try {
+        const res = await axios.get("https://localhost:7120/api/carts/1");
+        console.log("API response data:", res.data.data);
+        console.log("Type of cartItems:", typeof cartItems);
+        console.log("Is cartItems an array?", Array.isArray(cartItems));
+        const cartData = res.data.data;
+        setCartItems(cartData);
+      } catch (error) {
         console.error("Error fetching cart items:", error);
-      });
+      }
+    };
+    fetchCart();
   }, []);
 
   return (
@@ -41,8 +49,8 @@ export default function CartItemList() {
               role="list"
               className="divide-y divide-gray-200 border-b border-t border-gray-200"
             >
-              {cartItems.map((cartItem) => (
-                <li key={cartItem.id} className="flex py-6">
+              {cartItems.map((CartItem) => (
+                <li key={CartItem.id} className="flex py-6">
                   <div className="shrink-0"></div>
 
                   <div className="ml-4 flex flex-1 flex-col sm:ml-6">
@@ -50,11 +58,11 @@ export default function CartItemList() {
                       <div className="flex justify-between">
                         <h4 className="text-sm">
                           <a className="font-medium text-gray-700 hover:text-gray-800">
-                            {cartItem.name}
+                            {CartItem.productId}
                           </a>
                         </h4>
                         <p className="ml-4 text-sm font-medium text-gray-900">
-                          {cartItem.price}
+                          {CartItem.price}
                         </p>
                       </div>
                       <p className="mt-1 text-sm text-gray-500"></p>
@@ -85,7 +93,6 @@ export default function CartItemList() {
             </ul>
           </section>
 
-          {/* Order summary */}
           <section aria-labelledby="summary-heading" className="mt-10">
             <h2 id="summary-heading" className="sr-only">
               Order summary

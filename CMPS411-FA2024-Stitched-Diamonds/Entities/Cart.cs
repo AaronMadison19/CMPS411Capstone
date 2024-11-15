@@ -26,6 +26,7 @@
 
     public class CartGetDto
     {
+        public List<CartItemGetDto> CartItems { get; set; }
         public int Id { get; set; }
         public int? AccountId { get; set; }
         public int? SessionId { get; set; }
