@@ -14,12 +14,12 @@ const HomePage: FC = () => {
         <div className="absolute inset-0 bg-black bg-opacity-40"></div>
         <div className="relative z-10 container mx-auto">
           <h1 className="text-5xl md:text-6xl font-extrabold leading-tight tracking-tight mb-4">
-            Discover the Best Jewelry Pieces
+            Discover Quality Handmade Clothing and Jewelry
           </h1>
           <p className="text-lg md:text-xl font-light mb-6">
-            Handcrafted diamond jewelry for every occasion. Timeless elegance, unmatched quality.
+            Handcrafted comfortable clothing for every occasion. Timeless elegance, unmatched quality.
           </p>
-          <a href="#featured-products" className="inline-block px-8 py-3 bg-indigo-700 text-white font-semibold rounded-full shadow-lg hover:bg-indigo-800 transition duration-300 transform hover:scale-105">
+          <a href="/products" className="inline-block px-8 py-3 bg-indigo-700 text-white font-semibold rounded-full shadow-lg hover:bg-indigo-800 transition duration-300 transform hover:scale-105">
             Shop Now
           </a>
         </div>
@@ -31,17 +31,18 @@ const HomePage: FC = () => {
           Shop Our Featured Products
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-          {["Sweater", "Ring", "Earrings"].map((product, index) => (
+          {["Clothing", "Jewelry", "Accessories"].map((product, index) => (
             <div key={index} className="bg-white rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105">
               <img 
-                src={`https://source.unsplash.com/featured/?jewelry${index + 1}`} 
+                //src={`https://source.unsplash.com/featured/?jewelry${index + 1}`} 
+                src={'assets/triangle moon earrings.png'}
                 alt={product} 
                 className="w-full h-64 object-cover"
               />
               <div className="p-6">
                 <h3 className="text-xl font-semibold text-gray-800">{product}</h3>
-                <p className="mt-2 text-gray-600">$50.00</p>
-                <a href="#" className="mt-4 inline-block px-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition duration-300">
+                <p className="mt-2 text-gray-600">Explore our quality handmade products!</p>
+                <a href="/products" className="mt-4 inline-block px-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition duration-300">
                   Buy Now
                 </a>
               </div>
