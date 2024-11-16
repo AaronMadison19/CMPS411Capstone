@@ -144,7 +144,7 @@ namespace CMPS411_FA2024_Stitched_Diamonds.Controllers
             _dataContext.SaveChanges();
 
             response.Data = true;
-            return Ok(response); 
+            return Ok(response);
         }
     }
 }
