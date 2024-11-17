@@ -100,7 +100,8 @@ namespace CMPS411_FA2024_Stitched_Diamonds.Controllers
         {
             var response = new Response<MaterialGetDto>();
 
-            var material = _dataContext.Materials.FirstOrDefault(p => p.Id == id);
+            //var material = _dataContext.Materials.FirstOrDefault(p => p.Id == id);
+            var material = _dataContext.Materials.FirstOrDefault(p => p.Id == 1);
 
             if (material == null)
             {

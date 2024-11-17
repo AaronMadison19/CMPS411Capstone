@@ -1,7 +1,7 @@
 // src/index.tsx
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './page';
+import App from './page-old';
 import './styles.css';
 
 
