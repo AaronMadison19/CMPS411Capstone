@@ -149,37 +149,37 @@ const Account: React.FC = () => {
     //   }
     // };
 
-  const handleSaveChanges = async () => {
+    const handleSaveChanges = async () => {
     if (newPassword === '') {
-      setError("Please fill in the new password.");
-      return;
+        setError("Please fill in the new password.");
+        return;
     }
 
     try {
-      const updatedData = { ...profileData, password: newPassword };
+        const updatedData = { ...profileData, password: newPassword };
 
-      const putResponse = await axios.put(
+        const putResponse = await axios.put(
         `https://localhost:7120/api/accounts/${userId}`,
         updatedData,
         {
-          headers: {
+            headers: {
             "Content-Type": "application/json",
-          },
+            },
         }
-      );
+        );
 
-      if (putResponse.status === 200) {
+        if (putResponse.status === 200) {
         setNewPassword('');
         setError(null);
         alert("Password updated successfully!");
-      } else {
+        } else {
         setError("Failed to update password.");
-      }
+        }
     } catch (error) {
-      console.error("Error during password update:", error);
-      setError("Failed to update password due to an error.");
+        console.error("Error during password update:", error);
+        setError("Failed to update password due to an error.");
     }
-  };
+    };
 
 
 
