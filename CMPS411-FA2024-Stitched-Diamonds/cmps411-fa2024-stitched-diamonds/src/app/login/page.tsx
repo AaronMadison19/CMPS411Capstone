@@ -6,27 +6,60 @@ const Login: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  // const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  //   event.preventDefault();
+
+  //   const response = await fetch('/api/login', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     },
+  //     body: JSON.stringify({
+  //       UserName: username,
+  //       Password: password,
+  //     })
+  //   });
+
+  //   if (response.ok) {
+  //     console.log('Login successful!');
+  //     // Redirect or perform any action on successful login
+  //   } else {
+  //     console.log('Failed to log in.');
+  //   }
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    console.log(`/api/accounts/login?username=${username}&password=${password}`)
 
-    const response = await fetch('/api/login', {
+    // Send GET request with username and password as query parameters
+    const response = await fetch(`/accounts/login?username=${username}&password=${password}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
-        UserName: username,
-        Password: password,
-      })
     });
 
     if (response.ok) {
-      console.log('Login successful!');
-      // Redirect or perform any action on successful login
+      const data = await response.json();
+      
+      if (data && data.data) {
+        // Assuming the response data includes the AccountGetDto
+        const accountId = data.data.id; // Extract the account ID from the response
+        console.log('Login successful! Account ID:', accountId);
+
+        // Perform your action with the account ID, such as redirecting to the accounts page
+        // Example: redirect to the accounts page
+        // window.location.href = `/accounts/${accountId}`;
+
+      } else {
+        console.log('Account data not found in response.');
+      }
     } else {
       console.log('Failed to log in.');
     }
   };
+  
+
 
   return (
     <div className="bg-gray-50 text-gray-900">

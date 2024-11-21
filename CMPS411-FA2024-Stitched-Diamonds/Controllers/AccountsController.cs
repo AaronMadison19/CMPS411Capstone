@@ -77,6 +77,50 @@ namespace CMPS411_FA2024_Stitched_Diamonds.Controllers
             return Ok(response);
         }
 
+        [HttpGet("login")]
+        public ActionResult<Response<AccountGetDto>> GetAccountByCredentials(string username, string password)
+        {
+            var response = new Response<AccountGetDto>();
+
+            // Find the account based on username
+            var account = _dataContext.Accounts
+                .Where(a => a.Username == username)
+                .FirstOrDefault();
+
+            if (account == null)
+            {
+                response.AddError("username", "Account not found");
+                return NotFound(response);
+            }
+
+            // Validate the password (assuming you are using plain text for simplicity, but in a real scenario, you should use hashed password comparison)
+            if (account.Password != password)
+            {
+                response.AddError("password", "Invalid password");
+                return Unauthorized(response); // Unauthorized status code
+            }
+
+            // Map to AccountGetDto if the login is successful
+            var accountDto = new AccountGetDto
+            {
+                Id = account.Id,
+                FirstName = account.FirstName,
+                LastName = account.LastName,
+                Email = account.Email,
+                Username = account.Username,
+                PhoneNumber = account.PhoneNumber,
+                BillingAddress = account.BillingAddress,
+                ShippingAddress = account.ShippingAddress,
+                CreateDate = account.CreateDate,
+                IsActive = account.IsActive,
+                Role = account.Role,
+            };
+
+            response.Data = accountDto;
+
+            return Ok(response); // Return the account data with ID if the login is successful
+        }
+
         [HttpPost]
         public ActionResult<Response<AccountGetDto>> CreateAccount([FromBody] AccountCreateDto accountDto)
         {
