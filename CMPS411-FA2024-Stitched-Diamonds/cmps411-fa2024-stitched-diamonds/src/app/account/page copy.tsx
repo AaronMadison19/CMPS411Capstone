@@ -1,37 +1,16 @@
 "use client"; 
 import Navbar from '../components/navbar';
 import React, { useState, useEffect } from 'react';
-// import axios from 'axios';
 import axios from 'axios';
 import { PaperClipIcon } from '@heroicons/react/24/outline';
 import './styles.css';
 
-// Define the Account type and ApiResponse interface
-interface Account {
-  firstName: string;
-  lastName: string;
-  email: string;
-  username: string;
-  phoneNumber: string;
-  billingAddress: string;
-  shippingAddress: string;
-  role: string;
-  createDate: string;
-  isActive: number | string;
-}
-
-interface ApiResponse {
-  data: Account[];
-}
-
-const Account: React.FC = () => {
+const About: React.FC = () => {
     const [activeTab, setActiveTab] = useState('profile');
     const [profileData, setProfileData] = useState<{ firstName: string; lastName: string; email: string; username: string; 
-            phoneNumber: string; billingAddress: string; shippingAddress: string; role: string; createDate: string; isActiveValue: string; } | null>(null);
+            phoneNumber: string; billingAddress: string; shippingAddress: string; role: string; createDate: string; isActive: string; } | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
-
-    const [newPassword, setNewPassword] = useState<string>('');
 
     // Assume the ID of the user is 1 for this example
     const userId = 1; // Change this dynamically as per your app requirements
@@ -40,7 +19,7 @@ const Account: React.FC = () => {
     useEffect(() => {
         const fetchProfileData = async () => {
         try {
-            const response = await axios.get<ApiResponse>("https://localhost:7120/api/accounts");
+            const response = await axios.get("https://localhost:7120/api/accounts");
             console.log("API Response:", response.data); // Log the full response for debugging
             // const account = response.data.data; // Adjust based on your actual response structure
             // setProfileData({
@@ -52,12 +31,6 @@ const Account: React.FC = () => {
             // Ensure that there is data available and set it
             const account = response.data.data[userId-1]; // Access the first item in the data array
             if (account) {
-            const isActiveValue = 
-                    account.isActive == 1 || account.isActive == "1"
-                        ? "true"
-                        : account.isActive == 2 || account.isActive == "2"
-                        ? "false"
-                        : "unknown"; // Handle unexpected values              
                 setProfileData({
                     firstName: account.firstName, // Get first name from the API response
                     lastName: account.lastName, // Get first name from the API response
@@ -68,8 +41,7 @@ const Account: React.FC = () => {
                     shippingAddress: account.shippingAddress,
                     role: account.role,
                     createDate: account.createDate,
-                    // Set isActive based on the value: 1 = true, 2 = false
-                    isActiveValue: isActiveValue,
+                    isActive: account.isActive,
                 });
             } else {
                 setError("No account data found");
@@ -85,113 +57,15 @@ const Account: React.FC = () => {
         fetchProfileData();
     }, [userId]);
 
-    // const handleSaveChanges = async () => {
-    //   // Make sure the new password field is not empty
-    //   if (newPassword === '') {
-    //     setError("Please fill in the new password.");
-    //     return;
-    //   }
-    
-    //   let existingData; // Declare existingData only once here
-    
-    //   try {
-    //     // Fetch the existing user data
-    //     alert("in try")
-    //     const response = await axios.get(`https://localhost:7120/api/accounts/${userId}`);
-    
-    //     // Store the response data in existingData
-    //     existingData = response.data;
-    
-    //     // Ensure existingData is an object and contains the necessary fields
-    //     if (!existingData || typeof existingData !== 'object') {
-    //       throw new Error('Invalid user data.');
-    //     }
-    
-    //     // Prepare the updated data object, merging with existing data
-    //     const updatedData = {
-    //       // ...existingData, // Spread the existing data
-    //       firstName: "Caleb", // Get first name from the API response
-    //       lastName: "Patric", // Get first name from the API response
-    //       email: "calebpatrick@abc.com",   // Get username from the API response
-    //       username: "calebp",
-    //       phoneNumber: "123456789",
-    //       billingAddress: "500 W University Ave, Hammond, LA 70402",
-    //       shippingAddress: "500 W University Ave, Hammond, LA 70402",
-    //       password: newPassword, // Overwrite the password with the new value
-    //     };
-    
-    //     console.log("Updated Data:", updatedData);
-    //     alert("got the updated data")
-    //     // Send the PUT request to update the user's data
-    //     const putResponse = await axios.put(
-    //       `https://localhost:7120/api/accounts/${userId}`,
-    //       updatedData,
-    //       {
-    //         headers: {
-    //           "Content-Type": "application/json",
-    //         },
-    //       }
-    //     );
-    //       alert("after response")
-
-    //     // If the request is successful, inform the user
-    //     if (putResponse.status === 200) {
-    //       alert("Password updated successfully!");
-    //       setNewPassword(""); // Clear the password input field
-    //       setError(null); // Clear any previous error messages
-    //     } else {
-    //       setError("Failed to update password."); // Handle failure case
-    //     }
-    //   } catch (error) {
-    //     // General error handling (no AxiosError check)
-    //     console.error("Error:", error);
-    //     setError("Failed to update password due to an error.");
-    //   }
-    // };
-
-  const handleSaveChanges = async () => {
-    if (newPassword === '') {
-      setError("Please fill in the new password.");
-      return;
-    }
-
-    try {
-      const updatedData = { ...profileData, password: newPassword };
-
-      const putResponse = await axios.put(
-        `https://localhost:7120/api/accounts/${userId}`,
-        updatedData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (putResponse.status === 200) {
-        setNewPassword('');
-        setError(null);
-        alert("Password updated successfully!");
-      } else {
-        setError("Failed to update password.");
-      }
-    } catch (error) {
-      console.error("Error during password update:", error);
-      setError("Failed to update password due to an error.");
-    }
-  };
-
-
-
     // Handle loading state (display loading message)
-    // if (loading) {
-    //     return <div>Loading...</div>;
-    // }
+    if (loading) {
+        return <div>Loading...</div>;
+    }
 
-    // // Handle error state (display error message)
-    // if (error) {
-    //     return <div>{error}</div>;
-    // }
+    // Handle error state (display error message)
+    if (error) {
+        return <div>{error}</div>;
+    }
 
 
 
@@ -296,14 +170,7 @@ const Account: React.FC = () => {
                     </div>
                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                     <dt className="text-sm/6 font-medium text-gray-900">Email Address</dt>
-                    <dd className="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0">{profileData.email}
-                      <span
-                        onClick={() => setActiveTab('email')}  // This will switch the tab to "email"
-                        className="text-sm text-blue-600 hover:underline"
-                      >
-                        {' '}Update Email
-                      </span>
-                    </dd>
+                    <dd className="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0">{profileData.email}</dd>
                     </div>
                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                     <dt className="text-sm/6 font-medium text-gray-900">Member Since</dt>
@@ -311,7 +178,7 @@ const Account: React.FC = () => {
                     </div>
                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                     <dt className="text-sm/6 font-medium text-gray-900">Status</dt>
-                    <dd className="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0">{profileData.isActiveValue}</dd>
+                    <dd className="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0">{profileData.isActive}</dd>
                     </div>
                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                     <dt className="text-sm/6 font-medium text-gray-900">Close your account</dt>
@@ -346,7 +213,7 @@ const Account: React.FC = () => {
                   id="email"
                   value={profileData.email}
                   className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  disabled // This will disable the field and make it non-editable
+                  readOnly
                 />
               </div>
               <div>
@@ -354,22 +221,14 @@ const Account: React.FC = () => {
                 <input
                   type="password"
                   id="new-password"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}  // Track password input changes
                   className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   placeholder="••••••••"
                 />
               </div>
             </div>
-            {/* <button className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+            <button className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
               Save Changes
-            </button> */}
-            <button
-              onClick={handleSaveChanges}
-              className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-              >
-                Save Changes
-              </button>            
+            </button>
           </div>
         )}
 
@@ -438,4 +297,4 @@ const Account: React.FC = () => {
     
     
 )}
-export default Account;
+export default About;
