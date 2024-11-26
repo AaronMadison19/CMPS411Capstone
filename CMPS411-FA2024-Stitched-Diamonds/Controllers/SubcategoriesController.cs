@@ -45,12 +45,27 @@ namespace CMPS411_FA2024_Stitched_Diamonds.Controllers
 
             var subcategory = _dataContext.Subcategories
                 .Include(p => p.Category)
+                .Include(p => p.Products)
                 .Where(p => p.Id == id)
                 .Select(p => new SubcategoryGetDto
                 {
                     Id = p.Id,
                     Subtype = p.Subtype,
-                    CategoryId = p.CategoryId
+                    CategoryId = p.CategoryId,
+                    Products = p.Products.Select(p => new ProductGetDto
+                    {
+                        Id = p.Id,
+                        Name = p.Name,
+                        Description = p.Description,
+                        Price = p.Price,
+                        CategoryId = p.CategoryId,
+                        SubcategoryId = p.SubcategoryId,
+                        Details = p.Details,
+                        MaterialId = p.MaterialId,
+                        QuantityInStock = p.QuantityInStock,
+                        ImageUrl = p.ImageUrl
+
+                    }).ToList(),
                 })
                 .FirstOrDefault(subcategory => subcategory.Id == id);
 

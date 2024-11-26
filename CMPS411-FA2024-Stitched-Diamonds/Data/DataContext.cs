@@ -187,7 +187,13 @@ namespace CMPS411_FA2024_Stitched_Diamonds.Data
                 .HasOne(s => s.Category)
                 .WithMany(c => c.Subcategories)
                 .HasForeignKey(s => s.CategoryId);
-         
+
+            modelBuilder.Entity<Product>()
+                .HasOne(p => p.Subcategory)
+                .WithMany(c => c.Products)
+                .HasForeignKey(p => p.SubcategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+
         }
     }
 
