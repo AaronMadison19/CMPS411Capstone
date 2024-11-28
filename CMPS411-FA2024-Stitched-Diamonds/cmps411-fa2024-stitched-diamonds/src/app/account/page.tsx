@@ -34,23 +34,20 @@ const Account: React.FC = () => {
     const [newPassword, setNewPassword] = useState<string>('');
 
     // Assume the ID of the user is 1 for this example
-    const userId = 1; // Change this dynamically as per your app requirements
+    // const userId = 1; // Change this dynamically as per your app requirements
 
+    // Extract userId from the URL query parameter
+    const userId = new URLSearchParams(window.location.search).get('id'); // Get the 'id' parameter from the URL
+    
     // Fetch profile data when the component mounts
     useEffect(() => {
         const fetchProfileData = async () => {
         try {
             const response = await axios.get<ApiResponse>("https://localhost:7120/api/accounts");
             console.log("API Response:", response.data); // Log the full response for debugging
-            // const account = response.data.data; // Adjust based on your actual response structure
-            // setProfileData({
-            //     // firstName: account.firstName,
-            //     firstName: "caleb",
-            //     username: account.username,
-            // });
-            // setLoading(false);
             // Ensure that there is data available and set it
-            const account = response.data.data[userId-1]; // Access the first item in the data array
+            // const account = response.data.data[userId-1]; // Access the first item in the data array
+            const account = response.data.data.find((acc: any) => acc.id.toString() === userId); // Access the first item in the data array
             if (account) {
             const isActiveValue = 
                     account.isActive == 1 || account.isActive == "1"
@@ -84,70 +81,6 @@ const Account: React.FC = () => {
 
         fetchProfileData();
     }, [userId]);
-
-    // const handleSaveChanges = async () => {
-    //   // Make sure the new password field is not empty
-    //   if (newPassword === '') {
-    //     setError("Please fill in the new password.");
-    //     return;
-    //   }
-    
-    //   let existingData; // Declare existingData only once here
-    
-    //   try {
-    //     // Fetch the existing user data
-    //     alert("in try")
-    //     const response = await axios.get(`https://localhost:7120/api/accounts/${userId}`);
-    
-    //     // Store the response data in existingData
-    //     existingData = response.data;
-    
-    //     // Ensure existingData is an object and contains the necessary fields
-    //     if (!existingData || typeof existingData !== 'object') {
-    //       throw new Error('Invalid user data.');
-    //     }
-    
-    //     // Prepare the updated data object, merging with existing data
-    //     const updatedData = {
-    //       // ...existingData, // Spread the existing data
-    //       firstName: "Caleb", // Get first name from the API response
-    //       lastName: "Patric", // Get first name from the API response
-    //       email: "calebpatrick@abc.com",   // Get username from the API response
-    //       username: "calebp",
-    //       phoneNumber: "123456789",
-    //       billingAddress: "500 W University Ave, Hammond, LA 70402",
-    //       shippingAddress: "500 W University Ave, Hammond, LA 70402",
-    //       password: newPassword, // Overwrite the password with the new value
-    //     };
-    
-    //     console.log("Updated Data:", updatedData);
-    //     alert("got the updated data")
-    //     // Send the PUT request to update the user's data
-    //     const putResponse = await axios.put(
-    //       `https://localhost:7120/api/accounts/${userId}`,
-    //       updatedData,
-    //       {
-    //         headers: {
-    //           "Content-Type": "application/json",
-    //         },
-    //       }
-    //     );
-    //       alert("after response")
-
-    //     // If the request is successful, inform the user
-    //     if (putResponse.status === 200) {
-    //       alert("Password updated successfully!");
-    //       setNewPassword(""); // Clear the password input field
-    //       setError(null); // Clear any previous error messages
-    //     } else {
-    //       setError("Failed to update password."); // Handle failure case
-    //     }
-    //   } catch (error) {
-    //     // General error handling (no AxiosError check)
-    //     console.error("Error:", error);
-    //     setError("Failed to update password due to an error.");
-    //   }
-    // };
 
     const handleSaveChanges = async () => {
     if (newPassword === '') {

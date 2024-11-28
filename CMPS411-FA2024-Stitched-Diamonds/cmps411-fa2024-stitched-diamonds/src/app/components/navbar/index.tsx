@@ -22,9 +22,17 @@ const Navbar = () => {
           <Link href="/products" className="text-white hover:text-yellow-400 transition duration-300 ease-in-out">Shop</Link>
           <Link href="/about" className="text-white hover:text-yellow-400 transition duration-300 ease-in-out">About Us</Link>
           <Link href="/contact1" className="text-white hover:text-yellow-400 transition duration-300 ease-in-out">Contact</Link>
-          <Link href="/account" className="text-white hover:text-yellow-400 transition duration-300 ease-in-out">Account</Link>
+          {/* <Link href="/account" className="text-white hover:text-yellow-400 transition duration-300 ease-in-out">Account</Link> */}
           {/* CTA Button */}
           <Link href="/login" className="bg-yellow-400 text-black px-6 py-3 rounded-full font-semibold shadow-xl hover:bg-yellow-500 transition duration-300 ease-in-out">Log In</Link>
+          <Link href="/cart">
+            <img 
+              src="https://cdn.jsdelivr.net/npm/bootstrap-icons/icons/cart.svg" 
+              alt="Cart"  
+              style={{ width: '1.5rem', height: '1.5rem' }} // Increase the size here
+            />
+          </Link>
+
         </nav>
 
         {/* Mobile Navbar (Hamburger Menu) */}
