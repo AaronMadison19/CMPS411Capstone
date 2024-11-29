@@ -109,7 +109,7 @@ const Account: React.FC = () => {
         setError("Failed to update password.");
         }
     } catch (error) {
-        console.error("Error during password update:", error);
+        console.error("Error during password update:", error); 
         setError("Failed to update password due to an error.");
     }
     };
