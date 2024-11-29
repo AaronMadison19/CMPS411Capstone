@@ -32,12 +32,12 @@ namespace CMPS411_FA2024_Stitched_Diamonds.Controllers
                     LastName = p.LastName,
                     Email = p.Email,
                     Username = p.Username,
-                    PhoneNumber = p.PhoneNumber,
-                    BillingAddress = p.BillingAddress,
-                    ShippingAddress = p.ShippingAddress,
+                    PhoneNumber = p.PhoneNumber ?? "",
+                    BillingAddress = p.BillingAddress ?? "",
+                    ShippingAddress = p.ShippingAddress ?? "",
                     CreateDate = p.CreateDate,
                     IsActive = p.IsActive,
-                    Role = p.Role,
+                    Role = p.Role ?? "",
                 })
                 .ToList();
 
@@ -58,12 +58,12 @@ namespace CMPS411_FA2024_Stitched_Diamonds.Controllers
                     LastName = p.LastName,
                     Email = p.Email,
                     Username = p.Username,
-                    PhoneNumber = p.PhoneNumber,
-                    BillingAddress = p.BillingAddress,
-                    ShippingAddress = p.ShippingAddress,
+                    PhoneNumber = p.PhoneNumber ?? "",
+                    BillingAddress = p.BillingAddress ?? "",
+                    ShippingAddress = p.ShippingAddress ?? "",
                     CreateDate = p.CreateDate,
                     IsActive = p.IsActive,
-                    Role = p.Role,
+                    Role = p.Role ?? "",
                 })
                 .FirstOrDefault(account => account.Id == id);
 
@@ -108,12 +108,12 @@ namespace CMPS411_FA2024_Stitched_Diamonds.Controllers
                 LastName = account.LastName,
                 Email = account.Email,
                 Username = account.Username,
-                PhoneNumber = account.PhoneNumber,
-                BillingAddress = account.BillingAddress,
-                ShippingAddress = account.ShippingAddress,
+                PhoneNumber = account.PhoneNumber ?? "",
+                BillingAddress = account.BillingAddress ?? "",
+                ShippingAddress = account.ShippingAddress ?? "",
                 CreateDate = account.CreateDate,
                 IsActive = account.IsActive,
-                Role = account.Role,
+                Role = account.Role ?? "",
             };
 
             response.Data = accountDto;
@@ -133,10 +133,10 @@ namespace CMPS411_FA2024_Stitched_Diamonds.Controllers
                 Email = accountDto.Email,
                 Username = accountDto.Username,
                 Password = accountDto.Password,
-                //PhoneNumber = accountDto.PhoneNumber,
-                //BillingAddress = accountDto.BillingAddress,
-                //ShippingAddress = accountDto.ShippingAddress,
-                //Role = accountDto.Role,
+                PhoneNumber = "",
+                BillingAddress = "",
+                ShippingAddress = "",
+                Role = "",
                 CreateDate = DateTime.UtcNow,
                 IsActive = accountDto.IsActive,
             };
