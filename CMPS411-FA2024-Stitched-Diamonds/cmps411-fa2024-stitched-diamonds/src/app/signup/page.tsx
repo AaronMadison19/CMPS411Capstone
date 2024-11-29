@@ -5,7 +5,14 @@ import Navbar from "../components/navbar";
 const SignUp: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [phoneNumber, setphoneNumber] = useState('');
+  const [billingAddress, setbillingAddress] = useState('');
+  const [shippingAddress, setshippingAddress] = useState('');
+  const [role, setrole] = useState('');
   const [termsAgreed, setTermsAgreed] = useState(false);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -19,22 +26,40 @@ const SignUp: React.FC = () => {
       return; 
     }
 
-    const response = await fetch('/api/users', {
+    const response = await fetch('https://localhost:7120/api/accounts', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
+        FirstName: firstName,
+        LastName: lastName,
+        Email: email,
         UserName: username,
         Password: password,
-        Roles: ['User']
+        // Optional fields based on your DTO
+        phoneNumber: phoneNumber || '',
+        billingAddress: billingAddress || '',
+        shippingAddress: shippingAddress || '',
+        role: role || 'User',
+        createDate: new Date().toISOString(),
+        isActive: true, // Or false if applicable        
       })
     });
 
     if (response.ok) {
       console.log('Signup successful!');
+      const data = await response.json();
+      const newUserId = data.data.id; // Assuming the API returns the ID in `data.id`
+
+      // Redirect to the user's account page
+      window.location.href = `/account?id=${newUserId}`; // Navigate to the account page with the user's ID
+      
+      // You might want to redirect the user after successful signup
+      // window.location.href = "/login"; // Redirect to login page after successful signup
     } else {
       console.log('Failed to signup.');
+      alert("Signup failed. Please try again.");
     }
   };
 
@@ -60,6 +85,42 @@ const SignUp: React.FC = () => {
         <div className="max-w-lg mx-auto bg-white shadow-lg rounded-xl p-8">
           <h2 className="text-3xl font-semibold text-gray-800 text-center mb-8">Sign Up</h2>
           <form onSubmit={handleSubmit}>
+            <div className="mb-4">
+              <label htmlFor="firstName" className="block text-gray-800">First Name</label>
+              <input
+                type="text"
+                id="firstName"
+                placeholder="Enter your First Name"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                required
+                className="w-full p-3 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="lastName" className="block text-gray-800">Last Name</label>
+              <input
+                type="text"
+                id="lastName"
+                placeholder="Enter your Last Name"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                required
+                className="w-full p-3 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="email" className="block text-gray-800">Email</label>
+              <input
+                type="email"
+                id="email"
+                placeholder="Enter your Email Address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="w-full p-3 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
             <div className="mb-4">
               <label htmlFor="username" className="block text-gray-800">Username</label>
               <input
@@ -115,7 +176,6 @@ const SignUp: React.FC = () => {
           </p>
         </div>
       </div>
-
     </div>
   );
 };

@@ -93,7 +93,7 @@ namespace CMPS411_FA2024_Stitched_Diamonds.Controllers
                 return NotFound(response);
             }
 
-            // Validate the password (assuming you are using plain text for simplicity, but in a real scenario, you should use hashed password comparison)
+            // Validate the password
             if (account.Password != password)
             {
                 response.AddError("password", "Invalid password");
@@ -133,11 +133,11 @@ namespace CMPS411_FA2024_Stitched_Diamonds.Controllers
                 Email = accountDto.Email,
                 Username = accountDto.Username,
                 Password = accountDto.Password,
-                PhoneNumber = accountDto.PhoneNumber,
-                BillingAddress = accountDto.BillingAddress,
-                ShippingAddress = accountDto.ShippingAddress,
-                Role = accountDto.Role,
-                CreateDate = accountDto.CreateDate,
+                //PhoneNumber = accountDto.PhoneNumber,
+                //BillingAddress = accountDto.BillingAddress,
+                //ShippingAddress = accountDto.ShippingAddress,
+                //Role = accountDto.Role,
+                CreateDate = DateTime.UtcNow,
                 IsActive = accountDto.IsActive,
             };
 
@@ -151,10 +151,10 @@ namespace CMPS411_FA2024_Stitched_Diamonds.Controllers
                 LastName = accountDto.LastName,
                 Email = accountDto.Email,
                 Username= accountDto.Username,
-                PhoneNumber= accountDto.PhoneNumber,
-                BillingAddress= accountDto.BillingAddress,
-                ShippingAddress= accountDto.ShippingAddress,
-                Role = accountDto.Role,
+                //PhoneNumber= accountDto.PhoneNumber,
+                //BillingAddress= accountDto.BillingAddress,
+                //ShippingAddress= accountDto.ShippingAddress,
+                //Role = accountDto.Role,
                 CreateDate = accountDto.CreateDate,
                 IsActive = accountDto.IsActive,
             };
