@@ -1,4 +1,4 @@
-"use client"; 
+"use client";
 import Navbar from '../components/navbar';
 import React, { useState, useEffect } from 'react';
 // import axios from 'axios';
@@ -26,19 +26,20 @@ interface ApiResponse {
 
 const Account: React.FC = () => {
     const [activeTab, setActiveTab] = useState('profile');
-    const [profileData, setProfileData] = useState<{ firstName: string; lastName: string; email: string; username: string; 
+    const [profileData, setProfileData] = useState<{ firstName: string; lastName: string; email: string; username: string;
             phoneNumber: string; billingAddress: string; shippingAddress: string; role: string; createDate: string; isActiveValue: string; } | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
-
+    const [email, setNewEmail] = useState<string>('');
     const [newPassword, setNewPassword] = useState<string>('');
+    const [isSaving, setIsSaving] = useState<boolean>(false); // Save button state
 
     // Assume the ID of the user is 1 for this example
     // const userId = 1; // Change this dynamically as per your app requirements
 
     // Extract userId from the URL query parameter
     const userId = new URLSearchParams(window.location.search).get('id'); // Get the 'id' parameter from the URL
-    
+
     // Fetch profile data when the component mounts
     useEffect(() => {
         const fetchProfileData = async () => {
@@ -49,12 +50,12 @@ const Account: React.FC = () => {
             // const account = response.data.data[userId-1]; // Access the first item in the data array
             const account = response.data.data.find((acc: any) => acc.id.toString() === userId); // Access the first item in the data array
             if (account) {
-            const isActiveValue = 
+            const isActiveValue =
                     account.isActive == 1 || account.isActive == "1"
                         ? "true"
                         : account.isActive == 2 || account.isActive == "2"
                         ? "false"
-                        : "unknown"; // Handle unexpected values              
+                        : "unknown"; // Handle unexpected values
                 setProfileData({
                     firstName: account.firstName, // Get first name from the API response
                     lastName: account.lastName, // Get first name from the API response
@@ -68,6 +69,7 @@ const Account: React.FC = () => {
                     // Set isActive based on the value: 1 = true, 2 = false
                     isActiveValue: isActiveValue,
                 });
+                setNewEmail(account.email)
             } else {
                 setError("No account data found");
             }
@@ -82,14 +84,26 @@ const Account: React.FC = () => {
         fetchProfileData();
     }, [userId]);
 
+    // Handle email input change
+    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setNewEmail(e.target.value);
+    };
+
     const handleSaveChanges = async () => {
     if (newPassword === '') {
         setError("Please fill in the new password.");
         return;
     }
 
+    if (email === '') {
+        setError("Please provide an email address.");
+        return;
+    }
+
+    setIsSaving(true);
+
     try {
-        const updatedData = { ...profileData, password: newPassword };
+        const updatedData = { ...profileData, email: email, password: newPassword };
 
         const putResponse = await axios.put(
         `https://localhost:7120/api/accounts/${userId}`,
@@ -109,8 +123,10 @@ const Account: React.FC = () => {
         setError("Failed to update password.");
         }
     } catch (error) {
-        console.error("Error during password update:", error); 
+        console.error("Error during password update:", error);
         setError("Failed to update password due to an error.");
+    }finally {
+      setIsSaving(false);
     }
     };
 
@@ -130,7 +146,7 @@ const Account: React.FC = () => {
 
   return (
     <div className="text-gray-900">
-        
+
       {/* Navbar */}
       <Navbar />
 
@@ -258,13 +274,13 @@ const Account: React.FC = () => {
                         </ul>
                         <div className="wt-mt-xs-2 wt-widht-full">
                             <p className="wt-display-block wt-text-body wt-mb-xs-2 wt-width-full">You can reopen your account anytime. Just sign back in to Etsy or&nbsp;<a className="wt-text-link underline" href="https://www.etsy.com/help/contact">contact Etsy support</a>&nbsp;for help.</p>
-                            <p className="wt-text-title wt-width-full font-bold">Want to permanently delete your account instead? Go to your&nbsp;<a className="wt-text-link underline" href="https://www.etsy.com/your/account/privacy">Privacy Settings</a>&nbsp;and click "Request deletion of your data."</p>                    
+                            <p className="wt-text-title wt-width-full font-bold">Want to permanently delete your account instead? Go to your&nbsp;<a className="wt-text-link underline" href="https://www.etsy.com/your/account/privacy">Privacy Settings</a>&nbsp;and click "Request deletion of your data."</p>
                         </div>
                     </dd>
                     </div>
                 </dl>
             </div>
-        </div>        
+        </div>
         )}
 
         {/* Email & Password Section */}
@@ -277,9 +293,10 @@ const Account: React.FC = () => {
                 <input
                   type="email"
                   id="email"
-                  value={profileData.email}
+                  value={email}
+                  onChange={handleEmailChange} // Track email input changes
                   className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  disabled // This will disable the field and make it non-editable
+                  //disabled // This will disable the field and make it non-editable
                 />
               </div>
               <div>
@@ -299,11 +316,14 @@ const Account: React.FC = () => {
             </button> */}
             <button
               onClick={handleSaveChanges}
+              disabled={isSaving}
               className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
               >
                 Save Changes
-              </button>            
+              </button>
           </div>
+
+
         )}
 
         {/* Payment Methods Section */}
@@ -366,9 +386,9 @@ const Account: React.FC = () => {
       </div>
     </div>
 
-      
-  </div> 
-    
-    
+
+  </div>
+
+
 )}
 export default Account;
