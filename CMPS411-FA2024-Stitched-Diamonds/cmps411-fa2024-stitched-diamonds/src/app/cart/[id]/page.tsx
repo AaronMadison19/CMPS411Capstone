@@ -1,7 +1,8 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useParams } from "next/navigation"; // Updated hook for dynamic params
 
 interface CartItem {
   id: number;
@@ -13,24 +14,27 @@ interface CartItem {
 }
 
 export default function CartItemList() {
+  const params = useParams(); // Gets the params from the route
+  const cartId = params?.id; // Ensure `id` is safely extracted
+
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
   useEffect(() => {
-    const fetchCart = async () => {
+    const fetchCartItems = async () => {
+      if (!cartId) return; // Ensure `cartId` exists before fetching
       try {
-        const res = await axios.get("https://localhost:7120/api/carts/1");
-        console.log("API response data:", res.data);
-        const cartData = Array.isArray(res.data.cartItems)
-          ? res.data.cartItems
-          : [];
-        console.log("cartData:", cartData); // Log the cart data
-        setCartItems(cartData); // Set the cart items
+        const response = await axios.get(
+          `https://localhost:7120/api/carts/${cartId}`
+        );
+        const cartData = response.data?.data?.cartItems || [];
+        setCartItems(cartData);
       } catch (error) {
         console.error("Error fetching cart items:", error);
       }
     };
-    fetchCart();
-  }, []);
+
+    fetchCartItems();
+  }, [cartId]);
 
   return (
     <div className="bg-white">
