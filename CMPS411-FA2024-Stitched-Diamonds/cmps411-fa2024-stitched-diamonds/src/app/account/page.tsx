@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { PaperClipIcon } from '@heroicons/react/24/outline';
 import './styles.css';
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 // Define the Account type and ApiResponse interface
 interface Account {
@@ -33,6 +34,7 @@ const Account: React.FC = () => {
     const [email, setNewEmail] = useState<string>('');
     const [newPassword, setNewPassword] = useState<string>('');
     const [isSaving, setIsSaving] = useState<boolean>(false); // Save button state
+    const paypalClientId = "AehcG0j9aD4m74BcnTTrpNcM-C2VuR6DX6lzQGoUA4PZ_3Znx4zAuG1u2mhGx2G2LQJiYs17hwLjDeP6"; // Replace with your actual PayPal client ID
 
     // Assume the ID of the user is 1 for this example
     // const userId = 1; // Change this dynamically as per your app requirements
@@ -189,7 +191,7 @@ const Account: React.FC = () => {
               Payment Methods
             </button>
           </li>
-          <li>
+          {/* <li>
             <button
               className={`w-full text-left py-3 px-4 text-lg font-medium ${
                 activeTab === 'security' ? 'bg-gray-200 text-blue-600' : 'hover:bg-gray-100'
@@ -198,7 +200,7 @@ const Account: React.FC = () => {
             >
               Security
             </button>
-          </li>
+          </li> */}
         </ul>
       </div>
 
@@ -327,62 +329,62 @@ const Account: React.FC = () => {
         )}
 
         {/* Payment Methods Section */}
-        {activeTab === 'payment' && profileData && (
+{activeTab === 'payment' && profileData && (
         <div className="bg-white shadow-md rounded-lg p-6 mb-6">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-4">Payment Methods</h2>
-            <div className="space-y-6">
-            {/* PayPal Option */}
-            <div className="flex items-center justify-between border p-4 rounded-lg shadow-sm">
-                <div className="flex items-center space-x-4">
-                <img
-                    src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg"
-                    alt="PayPal"
-                    className="h-8"
-                />
-                {/* <span className="text-lg">PayPal</span> */}
-                </div>
-                <button className="text-sm text-blue-600 hover:underline">Connect PayPal</button>
-            </div>
+        <h2 className="text-2xl font-semibold text-gray-800 mb-4">Payment Methods</h2>
+        <div className="space-y-6">
+            {/* PayPal Payment Integration */}
+            <PayPalScriptProvider
+                options={{
+                    clientId: paypalClientId,
+                }}
+            >
+                <PayPalButtons
+                    style={{ layout: "vertical" }}
+                    createOrder={(data, actions) => {
+                        return actions.order.create({
+                          intent: "CAPTURE", // Specify the intent explicitly
+                          purchase_units: [
+                              {
+                                  amount: {
+                                      currency_code: "USD", // Add the currency code here
+                                      value: "10.00", // Replace with the transaction amount
+                                  },
+                                },
+                            ],
+                        });
+                    }}
+                    onApprove={async (data, actions) => {
+                        // Ensure that this always returns a Promise
+                        const details = await actions.order?.capture();
 
-            {/* Stripe Option */}
-            <div className="flex items-center justify-between border p-4 rounded-lg shadow-sm">
-                <div className="flex items-center space-x-4">
-                <img
-                    src="https://upload.wikimedia.org/wikipedia/commons/b/ba/Stripe_Logo%2C_revised_2016.svg"
-                    alt="Stripe"
-                    className="h-8"
+                        // Safely access payer information
+                        const payerName = details?.payer?.name?.given_name ?? 'Guest'; // Default to 'Guest' if no name is available
+                        alert(`Transaction completed by ${payerName}`);
+                    }}
                 />
-                {/* <span className="text-lg">Stripe</span> */}
-                <button className="text-sm text-blue-600 hover:underline">Connect Stripe</button>
-                </div>
-                {/* <button className="text-sm text-blue-600 hover:underline">Connect Stripe</button> */}
-            </div>
-            </div>
-
-            {/* Add Payment Method Button */}
-            <button className="mt-4 px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
-            Add Payment Method
-            </button>
+            </PayPalScriptProvider>
         </div>
-        )}
+    </div>
+  )}
 
         {/* Security Section */}
-        {activeTab === 'security' && profileData && (
-          <div className="bg-white shadow-md rounded-lg p-6 mb-6">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-4">Security Settings</h2>
-            <div className="space-y-6">
-              <div>
-                <label htmlFor="two-factor" className="block text-sm font-medium text-gray-700">Two-Factor Authentication</label>
-                <div className="flex items-center space-x-4">
-                  <button className="px-6 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700">
-                    Enable 2FA
-                  </button>
-                  <span className="text-sm text-gray-500">Increase your account security</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+      {/*  {activeTab === 'security' && profileData && (*/}
+      {/*    <div className="bg-white shadow-md rounded-lg p-6 mb-6">*/}
+      {/*      <h2 className="text-2xl font-semibold text-gray-800 mb-4">Security Settings</h2>*/}
+      {/*      <div className="space-y-6">*/}
+      {/*        <div>*/}
+      {/*          <label htmlFor="two-factor" className="block text-sm font-medium text-gray-700">Two-Factor Authentication</label>*/}
+      {/*          <div className="flex items-center space-x-4">*/}
+      {/*            <button className="px-6 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700">*/}
+      {/*              Enable 2FA*/}
+      {/*            </button>*/}
+      {/*            <span className="text-sm text-gray-500">Increase your account security</span>*/}
+      {/*          </div>*/}
+      {/*        </div>*/}
+      {/*      </div>*/}
+      {/*    </div>*/}
+      {/*  )}*/}
       </div>
     </div>
 
