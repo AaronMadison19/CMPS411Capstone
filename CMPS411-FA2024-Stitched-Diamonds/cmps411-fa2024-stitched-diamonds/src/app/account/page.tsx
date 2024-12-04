@@ -28,7 +28,7 @@ interface ApiResponse {
 const Account: React.FC = () => {
     const [activeTab, setActiveTab] = useState('profile');
     const [profileData, setProfileData] = useState<{ firstName: string; lastName: string; email: string; username: string;
-            phoneNumber: string; billingAddress: string; shippingAddress: string; role: string; createDate: string; isActiveValue: string; } | null>(null);
+            password: string; phoneNumber: string; billingAddress: string; shippingAddress: string; role: string; createDate: string; isActiveValue: string; } | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const [email, setNewEmail] = useState<string>('');
@@ -51,6 +51,7 @@ const Account: React.FC = () => {
             // Ensure that there is data available and set it
             // const account = response.data.data[userId-1]; // Access the first item in the data array
             const account = response.data.data.find((acc: any) => acc.id.toString() === userId); // Access the first item in the data array
+            console.log(account)
             if (account) {
             const isActiveValue =
                     account.isActive == 1 || account.isActive == "1"
@@ -63,6 +64,7 @@ const Account: React.FC = () => {
                     lastName: account.lastName, // Get first name from the API response
                     email: account.email,   // Get username from the API response
                     username: account.username,
+                    password: account.password,
                     phoneNumber: account.phoneNumber,
                     billingAddress: account.billingAddress,
                     shippingAddress: account.shippingAddress,
@@ -91,22 +93,52 @@ const Account: React.FC = () => {
       setNewEmail(e.target.value);
     };
 
+    const handleSaveEmail = async () => {
+        if (email === '') {
+            setError("Please provide an email address.");
+            return;
+        }
+
+        setIsSaving(true);
+        try {
+            const updatedData = {...profileData, email: email, password: newPassword };
+            console.log(updatedData)
+            const putResponse = await axios.put(
+                `https://localhost:7120/api/accounts/${userId}`,
+                updatedData,
+                { headers: { "Content-Type": "application/json" } }
+            );
+
+            if (putResponse.status === 200) {
+                alert("Email updated successfully!");
+            } else {
+                setError("Failed to update email.");
+            }
+        } catch (error) {
+            console.error("Error during email update:", error);
+            setError("Failed to update email due to an error.");
+        } finally {
+            setIsSaving(false);
+        }
+    };
+
+
     const handleSaveChanges = async () => {
     if (newPassword === '') {
         setError("Please fill in the new password.");
         return;
     }
 
-    if (email === '') {
-        setError("Please provide an email address.");
-        return;
-    }
+    // if (email === '') {
+    //     setError("Please provide an email address.");
+    //     return;
+    // }
 
     setIsSaving(true);
 
     try {
-        const updatedData = { ...profileData, email: email, password: newPassword };
-
+        const updatedData = { ...profileData, password: newPassword };
+        
         const putResponse = await axios.put(
         `https://localhost:7120/api/accounts/${userId}`,
         updatedData,
@@ -160,37 +192,31 @@ const Account: React.FC = () => {
       {/* Main Content */}
       <div className="w-1/4 bg-white shadow-md p-6">
         <h2 className="text-xl font-semibold text-gray-700 mb-8">Account Settings</h2>
-        <ul>
-          <li>
-            <button
-              className={`w-full text-left py-3 px-4 text-lg font-medium ${
-                activeTab === 'profile' ? 'bg-gray-200 text-blue-600' : 'hover:bg-gray-100'
-              }`}
-              onClick={() => setActiveTab('profile')}
-            >
-              Profile
-            </button>
-          </li>
-          <li>
-            <button
-              className={`w-full text-left py-3 px-4 text-lg font-medium ${
-                activeTab === 'email' ? 'bg-gray-200 text-blue-600' : 'hover:bg-gray-100'
-              }`}
-              onClick={() => setActiveTab('email')}
-            >
-              Email & Password
-            </button>
-          </li>
-          <li>
-            <button
-              className={`w-full text-left py-3 px-4 text-lg font-medium ${
-                activeTab === 'payment' ? 'bg-gray-200 text-blue-600' : 'hover:bg-gray-100'
-              }`}
-              onClick={() => setActiveTab('payment')}
-            >
-              Payment Methods
-            </button>
-          </li>
+          <ul>
+            <li>
+              <button
+                className={`w-full text-left py-3 px-4 text-lg font-medium ${activeTab === 'profile' ? 'bg-gray-200 text-blue-600' : 'hover:bg-gray-100'}`}
+                onClick={() => setActiveTab('profile')}
+              >
+                Profile
+              </button>
+            </li>
+            <li>
+              <button
+                className={`w-full text-left py-3 px-4 text-lg font-medium ${activeTab === 'email' ? 'bg-gray-200 text-blue-600' : 'hover:bg-gray-100'}`}
+                onClick={() => setActiveTab('email')}
+              >
+                Update Email & Password
+              </button>
+            </li>
+            <li>
+              <button
+                className={`w-full text-left py-3 px-4 text-lg font-medium ${activeTab === 'payment' ? 'bg-gray-200 text-blue-600' : 'hover:bg-gray-100'}`}
+                onClick={() => setActiveTab('payment')}
+              >
+                Payment Methods
+              </button>
+            </li>
           {/* <li>
             <button
               className={`w-full text-left py-3 px-4 text-lg font-medium ${
@@ -208,32 +234,6 @@ const Account: React.FC = () => {
       <div className="flex-1 p-6">
         {/* Profile Section */}
         {activeTab === 'profile' && profileData && (
-        //   <div className="bg-white shadow-md rounded-lg p-6 mb-6">
-        //     <h2 className="text-2xl font-semibold text-gray-800 mb-4">Profile Information</h2>
-        //     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        //       <div>
-        //         <label htmlFor="full-name" className="block text-sm font-medium text-gray-700">Full Name</label>
-        //         <input
-        //           type="text"
-        //           id="full-name"
-        //         //   value={profileData?.username || ''}
-        //           value={profileData.firstName}
-        //           className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-        //           readOnly
-        //         />
-        //       </div>
-        //       <div>
-        //         <label htmlFor="username" className="block text-sm font-medium text-gray-700">Username</label>
-        //         <input
-        //           type="text"
-        //           id="username"
-        //           value={profileData.username}
-        //           className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-        //           readOnly
-        //         />
-        //       </div>
-        //     </div>
-        //   </div>
             <div>
                 <div className="px-4 sm:px-0">
                 <h3 className="text-base/7 font-semibold text-gray-900">Applicant Information</h3>
@@ -301,6 +301,13 @@ const Account: React.FC = () => {
                   //disabled // This will disable the field and make it non-editable
                 />
               </div>
+              <button
+                onClick={handleSaveEmail}
+                disabled={isSaving}
+                className="mt-4 w-full bg-blue-600 text-white py-2 px-4 rounded-md"
+              >
+                Save Email
+              </button>              
               <div>
                 <label htmlFor="new-password" className="block text-sm font-medium text-gray-700">New Password</label>
                 <input
@@ -329,46 +336,46 @@ const Account: React.FC = () => {
         )}
 
         {/* Payment Methods Section */}
-{activeTab === 'payment' && profileData && (
-        <div className="bg-white shadow-md rounded-lg p-6 mb-6">
-        <h2 className="text-2xl font-semibold text-gray-800 mb-4">Payment Methods</h2>
-        <div className="space-y-6">
-            {/* PayPal Payment Integration */}
-            <PayPalScriptProvider
-                options={{
-                    clientId: paypalClientId,
-                }}
-            >
-                <PayPalButtons
-                    style={{ layout: "vertical" }}
-                    createOrder={(data, actions) => {
-                        return actions.order.create({
-                          intent: "CAPTURE", // Specify the intent explicitly
-                          purchase_units: [
-                              {
-                                  amount: {
-                                      currency_code: "USD", // Add the currency code here
-                                      value: "10.00", // Replace with the transaction amount
-                                  },
-                                },
-                            ],
-                        });
-                    }}
-                    onApprove={async (data, actions) => {
-                        // Ensure that this always returns a Promise
-                        const details = await actions.order?.capture();
+        {activeTab === 'payment' && profileData && (
+                <div className="bg-white shadow-md rounded-lg p-6 mb-6">
+                <h2 className="text-2xl font-semibold text-gray-800 mb-4">Payment Methods</h2>
+                <div className="space-y-6">
+                    {/* PayPal Payment Integration */}
+                    <PayPalScriptProvider
+                        options={{
+                            clientId: paypalClientId,
+                        }}
+                    >
+                        <PayPalButtons
+                            style={{ layout: "vertical" }}
+                            createOrder={(data, actions) => {
+                                return actions.order.create({
+                                  intent: "CAPTURE", // Specify the intent explicitly
+                                  purchase_units: [
+                                      {
+                                          amount: {
+                                              currency_code: "USD", // Add the currency code here
+                                              value: "10.00", // Replace with the transaction amount
+                                          },
+                                        },
+                                    ],
+                                });
+                            }}
+                            onApprove={async (data, actions) => {
+                                // Ensure that this always returns a Promise
+                                const details = await actions.order?.capture();
 
-                        // Safely access payer information
-                        const payerName = details?.payer?.name?.given_name ?? 'Guest'; // Default to 'Guest' if no name is available
-                        alert(`Transaction completed by ${payerName}`);
-                    }}
-                />
-            </PayPalScriptProvider>
-        </div>
-    </div>
-  )}
+                                // Safely access payer information
+                                const payerName = details?.payer?.name?.given_name ?? 'Guest'; // Default to 'Guest' if no name is available
+                                alert(`Transaction completed by ${payerName}`);
+                            }}
+                        />
+                    </PayPalScriptProvider>
+                </div>
+            </div>
+          )}
 
-        {/* Security Section */}
+      {/* Security Section */}
       {/*  {activeTab === 'security' && profileData && (*/}
       {/*    <div className="bg-white shadow-md rounded-lg p-6 mb-6">*/}
       {/*      <h2 className="text-2xl font-semibold text-gray-800 mb-4">Security Settings</h2>*/}
