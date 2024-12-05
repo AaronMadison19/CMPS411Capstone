@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "next/navigation"; // Updated hook for dynamic params
+import Link from "next/link";
 
 interface CartItem {
   id: number;
@@ -54,7 +55,7 @@ export default function CartItemList() {
               className="divide-y divide-gray-200 border-b border-t border-gray-200"
             >
               {cartItems.length === 0 ? (
-                <li>No items in the cart</li> // My check to see if the cartItems is empty (it always is)
+                <li>No items in the cart</li> // My anger inducing check to see if the cartItems is empty
               ) : (
                 cartItems.map((CartItem) => (
                   <li key={CartItem.id} className="flex py-6">
@@ -105,12 +106,14 @@ export default function CartItemList() {
             </div>
 
             <div className="mt-10">
-              <button
-                type="submit"
-                className="w-full rounded-md border border-transparent bg-indigo-600 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
-              >
-                Checkout
-              </button>
+              <Link href="/checkout/1">
+                <button
+                  type="submit"
+                  className="w-full rounded-md border border-transparent bg-indigo-600 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
+                >
+                  Checkout
+                </button>
+              </Link>
             </div>
           </section>
         </form>

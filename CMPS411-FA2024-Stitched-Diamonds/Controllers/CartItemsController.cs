@@ -62,7 +62,7 @@ namespace CMPS411_FA2024_Stitched_Diamonds.Controllers
                     Quantity = p.Quantity,
                     Price = p.Price
                 })
-                .FirstOrDefault(cartItem => cartItem.Id == id);
+                .FirstOrDefault();
 
             if (cartItem == null)
             {
@@ -79,30 +79,58 @@ namespace CMPS411_FA2024_Stitched_Diamonds.Controllers
         {
             var response = new Response<CartItemGetDto>();
 
-            var cartItem = new CartItem
+            // Check if the product already exists in the cart with the same variant
+            var existingCartItem = _dataContext.CartItems
+                .FirstOrDefault(ci => ci.CartId == cartItemDto.CartId && ci.ProductId == cartItemDto.ProductId && ci.VariantId == cartItemDto.VariantId);
+
+            if (existingCartItem != null)
             {
-                CartId = cartItemDto.CartId,
-                ProductId = cartItemDto.ProductId,
-                VariantId = cartItemDto.VariantId,
-                Quantity = cartItemDto.Quantity,
-                Price = cartItemDto.Price,
-            };
+                // Update the quantity of the existing cart item
+                existingCartItem.Quantity += cartItemDto.Quantity;
+                existingCartItem.Price = cartItemDto.Price;  // Ensure the price is updated if necessary
+                _dataContext.SaveChanges();
 
-            _dataContext.CartItems.Add(cartItem);
-            _dataContext.SaveChanges();
+                var updatedCartItemDto = new CartItemGetDto
+                {
+                    Id = existingCartItem.Id,
+                    CartId = existingCartItem.CartId,
+                    ProductId = existingCartItem.ProductId,
+                    VariantId = existingCartItem.VariantId,
+                    Quantity = existingCartItem.Quantity,
+                    Price = existingCartItem.Price
+                };
 
-            var createdCartItemDto = new CartItemGetDto
+                response.Data = updatedCartItemDto;
+                return Ok(response);
+            }
+            else
             {
-                Id = cartItem.Id,
-                CartId = cartItem.CartId,
-                ProductId = cartItem.ProductId,
-                VariantId = cartItem.VariantId,
-                Quantity = cartItem.Quantity,
-                Price = cartItem.Price
-            };
+                // Create a new cart item
+                var cartItem = new CartItem
+                {
+                    CartId = cartItemDto.CartId,
+                    ProductId = cartItemDto.ProductId,
+                    VariantId = cartItemDto.VariantId,
+                    Quantity = cartItemDto.Quantity,
+                    Price = cartItemDto.Price,
+                };
 
-            response.Data = createdCartItemDto;
-            return CreatedAtAction(nameof(GetCartItemById), new { id = cartItem.Id }, response);
+                _dataContext.CartItems.Add(cartItem);
+                _dataContext.SaveChanges();
+
+                var createdCartItemDto = new CartItemGetDto
+                {
+                    Id = cartItem.Id,
+                    CartId = cartItem.CartId,
+                    ProductId = cartItem.ProductId,
+                    VariantId = cartItem.VariantId,
+                    Quantity = cartItem.Quantity,
+                    Price = cartItem.Price
+                };
+
+                response.Data = createdCartItemDto;
+                return CreatedAtAction(nameof(GetCartItemById), new { id = cartItem.Id }, response);
+            }
         }
 
         [HttpPut("{id}")]
