@@ -50,6 +50,7 @@ namespace CMPS411_FA2024_Stitched_Diamonds.Controllers
             var cart = _dataContext.Carts
                 .Include(p => p.Account)
                 .Include(p => p.Session)
+                .Include(p => p.CartItems)
                 .Where(p => p.Id == id)
                 .Select(p => new CartGetDto
                 {
@@ -59,8 +60,18 @@ namespace CMPS411_FA2024_Stitched_Diamonds.Controllers
                     CreatedDate = p.CreatedDate,
                     UpdatedDate = p.UpdatedDate,
                     IsActive = p.IsActive,
+                    CartItems = p.CartItems.Select(p => new CartItemGetDto
+                    {
+                     Id = p.Id,
+                     CartId = p.CartId,
+                     ProductId = p.ProductId,
+                     VariantId = p.VariantId,
+                     Quantity = p.Quantity,
+                     Price = p.Price,
+                        
+                    }).ToList(),
                 })
-                .FirstOrDefault(cart => cart.Id == id);
+           .FirstOrDefault(cart => cart.Id == id);
 
             if (cart == null)
             {

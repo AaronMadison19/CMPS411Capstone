@@ -1,38 +1,11 @@
-/*
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
-*/
-
 "use client";
 
-import { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { Radio, RadioGroup } from "@headlessui/react";
 import { CheckCircleIcon, TrashIcon } from "@heroicons/react/20/solid";
+import { useParams } from "next/navigation"; // Updated hook for dynamic params
 
-const products = [
-  {
-    id: 1,
-    title: "Basic Tee",
-    href: "#",
-    price: "$32.00",
-    color: "Black",
-    size: "Large",
-    imageSrc:
-      "https://tailwindui.com/plus/img/ecommerce-images/checkout-page-02-product-01.jpg",
-    imageAlt: "Front of men's Basic Tee in black.",
-  },
-  // More products...
-];
 const deliveryMethods = [
   {
     id: 1,
@@ -42,17 +15,42 @@ const deliveryMethods = [
   },
   { id: 2, title: "Express", turnaround: "2–5 business days", price: "$16.00" },
 ];
-const paymentMethods = [
-  { id: "credit-card", title: "Credit card" },
-  { id: "paypal", title: "PayPal" },
-  { id: "etransfer", title: "eTransfer" },
-];
+
+interface CartItem {
+  id: number;
+  cartId: number;
+  productId: number;
+  variantId: number;
+  quantity: number;
+  price: number;
+}
 
 export default function Example() {
   const [selectedDeliveryMethod, setSelectedDeliveryMethod] = useState(
     deliveryMethods[0]
   );
 
+  const params = useParams(); // Gets the params from the route
+  const cartId = params?.id; // Ensure `id` is safely extracted
+
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+
+  useEffect(() => {
+    const fetchCartItems = async () => {
+      if (!cartId) return; // Ensure `cartId` exists before fetching
+      try {
+        const response = await axios.get(
+          `https://localhost:7120/api/carts/${cartId}`
+        );
+        const cartData = response.data?.data?.cartItems || [];
+        setCartItems(cartData);
+      } catch (error) {
+        console.error("Error fetching cart items:", error);
+      }
+    };
+
+    fetchCartItems();
+  }, [cartId]);
   return (
     <div className="bg-gray-50">
       <div className="mx-auto max-w-2xl px-4 pb-24 pt-16 sm:px-6 lg:max-w-7xl lg:px-8">
@@ -78,6 +76,23 @@ export default function Example() {
                     name="email-address"
                     type="email"
                     autoComplete="email"
+                    className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                  />
+                </div>
+              </div>
+              <div className="sm:col-span-2">
+                <label
+                  htmlFor="phone"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Phone
+                </label>
+                <div className="mt-1">
+                  <input
+                    id="phone"
+                    name="phone"
+                    type="text"
+                    autoComplete="tel"
                     className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                   />
                 </div>
@@ -252,24 +267,6 @@ export default function Example() {
                     />
                   </div>
                 </div>
-
-                <div className="sm:col-span-2">
-                  <label
-                    htmlFor="phone"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Phone
-                  </label>
-                  <div className="mt-1">
-                    <input
-                      id="phone"
-                      name="phone"
-                      type="text"
-                      autoComplete="tel"
-                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                    />
-                  </div>
-                </div>
               </div>
             </div>
 
@@ -317,118 +314,6 @@ export default function Example() {
                 </RadioGroup>
               </fieldset>
             </div>
-
-            {/* Payment */}
-            <div className="mt-10 border-t border-gray-200 pt-10">
-              <h2 className="text-lg font-medium text-gray-900">Payment</h2>
-
-              <fieldset className="mt-4">
-                <legend className="sr-only">Payment type</legend>
-                <div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
-                  {paymentMethods.map((paymentMethod, paymentMethodIdx) => (
-                    <div key={paymentMethod.id} className="flex items-center">
-                      {paymentMethodIdx === 0 ? (
-                        <input
-                          defaultChecked
-                          id={paymentMethod.id}
-                          name="payment-type"
-                          type="radio"
-                          className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                        />
-                      ) : (
-                        <input
-                          id={paymentMethod.id}
-                          name="payment-type"
-                          type="radio"
-                          className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                        />
-                      )}
-
-                      <label
-                        htmlFor={paymentMethod.id}
-                        className="ml-3 block text-sm font-medium text-gray-700"
-                      >
-                        {paymentMethod.title}
-                      </label>
-                    </div>
-                  ))}
-                </div>
-              </fieldset>
-
-              <div className="mt-6 grid grid-cols-4 gap-x-4 gap-y-6">
-                <div className="col-span-4">
-                  <label
-                    htmlFor="card-number"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Card number
-                  </label>
-                  <div className="mt-1">
-                    <input
-                      id="card-number"
-                      name="card-number"
-                      type="text"
-                      autoComplete="cc-number"
-                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                    />
-                  </div>
-                </div>
-
-                <div className="col-span-4">
-                  <label
-                    htmlFor="name-on-card"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Name on card
-                  </label>
-                  <div className="mt-1">
-                    <input
-                      id="name-on-card"
-                      name="name-on-card"
-                      type="text"
-                      autoComplete="cc-name"
-                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                    />
-                  </div>
-                </div>
-
-                <div className="col-span-3">
-                  <label
-                    htmlFor="expiration-date"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Expiration date (MM/YY)
-                  </label>
-                  <div className="mt-1">
-                    <input
-                      id="expiration-date"
-                      name="expiration-date"
-                      type="text"
-                      autoComplete="cc-exp"
-                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="cvc"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    CVC
-                  </label>
-                  <div className="mt-1">
-                    <input
-                      id="cvc"
-                      name="cvc"
-                      type="text"
-                      autoComplete="csc"
-                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
 
           {/* Order summary */}
@@ -438,35 +323,12 @@ export default function Example() {
             <div className="mt-4 rounded-lg border border-gray-200 bg-white shadow-sm">
               <h3 className="sr-only">Items in your cart</h3>
               <ul role="list" className="divide-y divide-gray-200">
-                {products.map((product) => (
-                  <li key={product.id} className="flex px-4 py-6 sm:px-6">
-                    <div className="shrink-0">
-                      <img
-                        alt={product.imageAlt}
-                        src={product.imageSrc}
-                        className="w-20 rounded-md"
-                      />
-                    </div>
+                {cartItems.map((cartItem) => (
+                  <li key={cartItem.id} className="flex px-4 py-6 sm:px-6">
+                    <div className="shrink-0"></div>
 
                     <div className="ml-6 flex flex-1 flex-col">
                       <div className="flex">
-                        <div className="min-w-0 flex-1">
-                          <h4 className="text-sm">
-                            <a
-                              href={product.href}
-                              className="font-medium text-gray-700 hover:text-gray-800"
-                            >
-                              {product.title}
-                            </a>
-                          </h4>
-                          <p className="mt-1 text-sm text-gray-500">
-                            {product.color}
-                          </p>
-                          <p className="mt-1 text-sm text-gray-500">
-                            {product.size}
-                          </p>
-                        </div>
-
                         <div className="ml-4 flow-root shrink-0">
                           <button
                             type="button"
@@ -480,7 +342,8 @@ export default function Example() {
 
                       <div className="flex flex-1 items-end justify-between pt-2">
                         <p className="mt-1 text-sm font-medium text-gray-900">
-                          {product.price}
+                          Product ID:
+                          {cartItem.id}
                         </p>
 
                         <div className="ml-4">
@@ -507,10 +370,18 @@ export default function Example() {
                   </li>
                 ))}
               </ul>
+
               <dl className="space-y-6 border-t border-gray-200 px-4 py-6 sm:px-6">
                 <div className="flex items-center justify-between">
-                  <dt className="text-sm">Subtotal</dt>
-                  <dd className="text-sm font-medium text-gray-900">$64.00</dd>
+                  <dt className="text-sm">
+                    Subtotal $
+                    {cartItems.reduce(
+                      (total, cartItem) =>
+                        total + cartItem.price * cartItem.quantity,
+                      0
+                    )}
+                  </dt>
+                  <dd className="text-sm font-medium text-gray-900"></dd>
                 </div>
                 <div className="flex items-center justify-between">
                   <dt className="text-sm">Shipping</dt>
