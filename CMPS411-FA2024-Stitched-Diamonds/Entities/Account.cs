@@ -1,6 +1,13 @@
-﻿namespace CMPS411_FA2024_Stitched_Diamonds.Entities
+﻿using System;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace CMPS411_FA2024_Stitched_Diamonds.Entities
 {
-    public class Account
+    public class Account : IdentityUser<int>
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
@@ -13,7 +20,7 @@
         public string ShippingAddress { get; set; }
         public DateTime CreateDate { get; set; }
         public bool IsActive { get; set; }
-        public string Role { get; set; }  // e.g., 'Customer', 'Admin', 'Guest'
+        public AccountRole Role { get; set; }  // e.g., 'Customer', 'Admin', 'Guest'
 
         public ICollection<Order> Orders { get; set; }
         public ICollection<Review> Reviews { get; set; }
@@ -31,7 +38,7 @@
         public string PhoneNumber { get; set; }
         public string BillingAddress { get; set; }
         public string ShippingAddress { get; set; }
-        public string Role { get; set; }
+        public AccountRole Role { get; set; }
         public DateTime CreateDate { get; set; }
         public bool IsActive { get; set; }
     }
@@ -61,7 +68,7 @@
         public string PhoneNumber { get; set; }
         public string BillingAddress { get; set; }
         public string ShippingAddress { get; set; }
-        public string Role { get; set; }
+        public AccountRole Role { get; set; }
         public DateTime CreateDate { get; set; }
         public bool IsActive { get; set; }
     }
