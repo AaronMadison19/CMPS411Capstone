@@ -1,35 +1,49 @@
 "use client";  // Client-side rendering
 
 // import { useState } from 'react';
-import React, { useState } from "react";
+import React, { useState, useEffect  } from "react";
 import Link from 'next/link';
 
 const Navbar = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Track login state
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // Mobile menu state
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Login state
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); // Dropdown menu state
+
+  const toggleMenu = () => setIsMenuOpen((prev) => !prev);
+  const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
 
   const handleLogin = () => {
     // Simulate login and store a token
     // const token = "user-auth-token"; // Replace with real token from backend
     // localStorage.setItem("authToken", token);
     setIsLoggedIn(true);
+    // Simulate storing a token (optional)
+    localStorage.setItem("authToken", "mock-token");
     window.location.href = "/login"; // Redirect
   };
 
   const handleLogout = () => {
     // localStorage.removeItem("authToken"); // Clear the token
     setIsLoggedIn(false);
-    window.location.href = "/login"; // Redirect
+    localStorage.removeItem("authToken");
+      window.location.href = "/login"; // Redirect
   };
 
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      // Check if the click was outside the dropdown container
+      if (!(event.target as HTMLElement).closest('.dropdown-container')) {
+        setIsDropdownOpen(false);
+      }
+    };
 
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
-
-  return (
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+return (
     <header className="bg-gradient-to-r from-indigo-700 via-purple-600 to-blue-500 fixed top-0 left-0 w-full z-50 shadow-xl">
       <div className="container mx-auto px-6 py-4 flex justify-between items-center">
         {/* Logo/Brand Name */}
@@ -62,18 +76,21 @@ const Navbar = () => {
                   alt="User"  
                   style={{ width: '1.5rem', height: '1.5rem' }} // User icon
                 />
-              </button>
-              
-              {isDropdownOpen && (
+                </button>              
+                {/* Dropdown */}
+                {isDropdownOpen && (
                 <div className="absolute right-0 mt-2 bg-white text-black rounded-lg shadow-xl p-4">
-                  <Link href="/account">
-                    <a className="block px-4 py-2 hover:bg-gray-200 transition">Account Setting</a>
+                  <Link href="/account" className="block px-4 py-2 hover:bg-gray-200 transition">
+                    Account Setting
                   </Link>
-                  <button onClick={handleLogout} className="block w-full px-4 py-2 text-left hover:bg-gray-200 transition">
+                  <button 
+                    onClick={handleLogout} 
+                    className="block w-full px-4 py-2 text-left hover:bg-gray-200 transition"
+                  >
                     Logout
                   </button>
                 </div>
-              )}
+              )}            
             </div>
           ) : (
             <button
