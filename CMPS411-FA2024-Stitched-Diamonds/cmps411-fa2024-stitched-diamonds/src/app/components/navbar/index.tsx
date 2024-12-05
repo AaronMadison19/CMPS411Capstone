@@ -1,33 +1,35 @@
 "use client";  // Client-side rendering
 
 // import { useState } from 'react';
-import React, { useState } from "react";
+import React, { useState, useEffect  } from "react";
 import Link from 'next/link';
 
 const Navbar = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Track login state
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // Dropdown menu state
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // Mobile menu state
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Login state
+
+  const toggleMenu = () => setIsMenuOpen((prev) => !prev);
 
   const handleLogin = () => {
     // Simulate login and store a token
     // const token = "user-auth-token"; // Replace with real token from backend
     // localStorage.setItem("authToken", token);
     setIsLoggedIn(true);
+    // Simulate storing a token (optional)
+    localStorage.setItem("authToken", "mock-token");
     window.location.href = "/login"; // Redirect
   };
 
   const handleLogout = () => {
     // localStorage.removeItem("authToken"); // Clear the token
     setIsLoggedIn(false);
+    localStorage.removeItem("authToken");
     window.location.href = "/login"; // Redirect
   };
 
-
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
+  useEffect(() => {
+    setIsLoggedIn(localStorage.getItem("authToken") != null);
+  }, [])
 
   return (
     <header className="bg-gradient-to-r from-indigo-700 via-purple-600 to-blue-500 fixed top-0 left-0 w-full z-50 shadow-xl">
@@ -55,26 +57,12 @@ const Navbar = () => {
 
           {/* Dynamic Login/Logout and User Options */}
           {isLoggedIn ? (
-            <div className="relative">
-              <button onClick={toggleDropdown} className="flex items-center text-white">
-                <img 
-                  src="https://cdn.jsdelivr.net/npm/bootstrap-icons/icons/person-circle.svg" 
-                  alt="User"  
-                  style={{ width: '1.5rem', height: '1.5rem' }} // User icon
-                />
-              </button>
-              
-              {isDropdownOpen && (
-                <div className="absolute right-0 mt-2 bg-white text-black rounded-lg shadow-xl p-4">
-                  <Link href="/account">
-                    <a className="block px-4 py-2 hover:bg-gray-200 transition">Account Setting</a>
-                  </Link>
-                  <button onClick={handleLogout} className="block w-full px-4 py-2 text-left hover:bg-gray-200 transition">
-                    Logout
-                  </button>
-                </div>
-              )}
-            </div>
+            <button 
+            onClick={handleLogout} 
+            className="bg-yellow-400 text-black px-6 py-3 rounded-full font-semibold shadow-xl hover:bg-yellow-500 transition duration-300 ease-in-out"
+          >
+            Logout
+          </button>
           ) : (
             <button
               onClick={handleLogin}

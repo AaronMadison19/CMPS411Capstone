@@ -7,12 +7,14 @@ import { PaperClipIcon } from '@heroicons/react/24/outline';
 import './styles.css';
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
+
 // Define the Account type and ApiResponse interface
 interface Account {
   firstName: string;
   lastName: string;
   email: string;
   username: string;
+  password: string;
   phoneNumber: string;
   billingAddress: string;
   shippingAddress: string;
@@ -34,6 +36,8 @@ const Account: React.FC = () => {
     const [email, setNewEmail] = useState<string>('');
     const [newPassword, setNewPassword] = useState<string>('');
     const [isSaving, setIsSaving] = useState<boolean>(false); // Save button state
+    const [isDeactivating, setIsDeactivating] = useState(false);
+    const [dropdownOpen, setDropdownOpen] = useState(false);
     const paypalClientId = "AehcG0j9aD4m74BcnTTrpNcM-C2VuR6DX6lzQGoUA4PZ_3Znx4zAuG1u2mhGx2G2LQJiYs17hwLjDeP6"; // Replace with your actual PayPal client ID
 
     // Assume the ID of the user is 1 for this example
@@ -101,13 +105,14 @@ const Account: React.FC = () => {
 
         setIsSaving(true);
         try {
-            const updatedData = {...profileData, email: email, password: newPassword };
+            const updatedData = {...profileData, email: email};
             console.log(updatedData)
             const putResponse = await axios.put(
                 `https://localhost:7120/api/accounts/${userId}`,
                 updatedData,
                 { headers: { "Content-Type": "application/json" } }
             );
+            console.log(putResponse)
 
             if (putResponse.status === 200) {
                 alert("Email updated successfully!");
@@ -164,6 +169,33 @@ const Account: React.FC = () => {
     }
     };
 
+    const handleDeactivate = async () => {
+      try {
+        const url = `https://localhost:7120/api/accounts/${userId}`;
+        console.log(url)
+        const response = await axios.delete(`https://localhost:7120/api/accounts/${userId}`);
+        alert(response)
+        console.log(response)
+        const responseData = response.data as { 
+          success: boolean; 
+          data?: boolean; 
+          errors?: { [key: string]: string } 
+        };
+
+        // if (responseData.success) {
+        //   alert('Account deactivated.');
+        //   window.location.href = '/login'; // Redirect to login after deactivation
+        // } else {
+        //   console.error('Errors:', responseData.errors);
+        //   alert('Failed to deactivate account. Please try again.');
+        // }
+        window.location.href = "/login";
+      } catch (error) {
+        console.error('Deactivation error:', error);
+        alert('An error occurred while deactivating your account.');
+      }
+    };
+
 
 
     // Handle loading state (display loading message)
@@ -179,7 +211,7 @@ const Account: React.FC = () => {
 
 
   return (
-    <div className="text-gray-900">
+    <div className="text-gray-900" style={{ paddingTop: '200px' }}>
 
       {/* Navbar */}
       <Navbar />
@@ -191,11 +223,11 @@ const Account: React.FC = () => {
 
       {/* Main Content */}
       <div className="w-1/4 bg-white shadow-md p-6">
-        <h2 className="text-xl font-semibold text-gray-700 mb-8">Account Settings</h2>
+        {/* <h2 className="text-xl font-semibold text-gray-700 mb-8">Account Settings</h2> */}
           <ul>
             <li>
               <button
-                className={`w-full text-left py-3 px-4 text-lg font-medium ${activeTab === 'profile' ? 'bg-gray-200 text-blue-600' : 'hover:bg-gray-100'}`}
+                className={`w-full text-left py-3 px-4 text-lg font-medium ${activeTab === 'profile' ? 'bg-gray-200 text-blue-600' : 'hover:bg-gray-500 hover:text-blue-600'}`}
                 onClick={() => setActiveTab('profile')}
               >
                 Profile
@@ -203,7 +235,7 @@ const Account: React.FC = () => {
             </li>
             <li>
               <button
-                className={`w-full text-left py-3 px-4 text-lg font-medium ${activeTab === 'email' ? 'bg-gray-200 text-blue-600' : 'hover:bg-gray-100'}`}
+                className={`w-full text-left py-3 px-4 text-lg font-medium ${activeTab === 'email' ? 'bg-gray-200 text-blue-600' : 'hover:bg-gray-500 hover:text-blue-600'}`}
                 onClick={() => setActiveTab('email')}
               >
                 Update Email & Password
@@ -211,12 +243,22 @@ const Account: React.FC = () => {
             </li>
             <li>
               <button
-                className={`w-full text-left py-3 px-4 text-lg font-medium ${activeTab === 'payment' ? 'bg-gray-200 text-blue-600' : 'hover:bg-gray-100'}`}
+                className={`w-full text-left py-3 px-4 text-lg font-medium ${activeTab === 'payment' ? 'bg-gray-200 text-blue-600' : 'hover:bg-gray-500 hover:text-blue-600'}`}
                 onClick={() => setActiveTab('payment')}
               >
                 Payment Methods
               </button>
             </li>
+            <li>
+              <button
+                className={`w-full text-left py-3 px-4 text-lg font-medium ${activeTab === 'Deactivation' ? 'bg-gray-200 text-blue-600' : 'hover:bg-gray-500 hover:text-blue-600'}`}
+                onClick={() => setActiveTab('Deactivation')}
+              >
+                Account Deactivation
+              </button>
+            </li>
+
+
           {/* <li>
             <button
               className={`w-full text-left py-3 px-4 text-lg font-medium ${
@@ -247,12 +289,12 @@ const Account: React.FC = () => {
                     </div>
                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                     <dt className="text-sm/6 font-medium text-gray-900">Email Address</dt>
-                    <dd className="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0">{profileData.email}
+                    <dd className="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0">{profileData.email}{' '}
                       <span
                         onClick={() => setActiveTab('email')}  // This will switch the tab to "email"
-                        className="text-sm text-blue-600 hover:underline"
+                        className="cursor-pointer text-sm text-blue-600 hover:underline"
                       >
-                        {' '}Update Email
+                        Update Email
                       </span>
                     </dd>
                     </div>
@@ -275,8 +317,8 @@ const Account: React.FC = () => {
                             <li className="close-account-items wt-text-body--tight">Your account settings will remain intact, and no one will be able to use your username.</li>
                         </ul>
                         <div className="wt-mt-xs-2 wt-widht-full">
-                            <p className="wt-display-block wt-text-body wt-mb-xs-2 wt-width-full">You can reopen your account anytime. Just sign back in to Etsy or&nbsp;<a className="wt-text-link underline" href="https://www.etsy.com/help/contact">contact Etsy support</a>&nbsp;for help.</p>
-                            <p className="wt-text-title wt-width-full font-bold">Want to permanently delete your account instead? Go to your&nbsp;<a className="wt-text-link underline" href="https://www.etsy.com/your/account/privacy">Privacy Settings</a>&nbsp;and click "Request deletion of your data."</p>
+                            <p className="wt-display-block wt-text-body wt-mb-xs-2 wt-width-full">You can reopen your account anytime. </p>
+                            <p className="wt-text-title wt-width-full font-bold">Want to permanently delete your account instead? Go to your&nbsp;<a className="cursor-pointer wt-text-link underline" onClick={() => setActiveTab('Deactivation')}>Account Deactivation</a>&nbsp;and click "Deactivate Account."</p>
                         </div>
                     </dd>
                     </div>
@@ -305,6 +347,7 @@ const Account: React.FC = () => {
                 onClick={handleSaveEmail}
                 disabled={isSaving}
                 className="mt-4 w-full bg-blue-600 text-white py-2 px-4 rounded-md"
+                style={{ width: '200px' }}
               >
                 Save Email
               </button>              
@@ -327,6 +370,7 @@ const Account: React.FC = () => {
               onClick={handleSaveChanges}
               disabled={isSaving}
               className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              style={{ width: '200px' }}
               >
                 Save Changes
               </button>
@@ -374,6 +418,26 @@ const Account: React.FC = () => {
                 </div>
             </div>
           )}
+
+        {/* Email & Password Section */}
+        {activeTab === 'Deactivation'  && profileData && (
+          <div className="bg-white shadow-md rounded-lg p-6 mb-6">
+            <div className="space-y-6">
+            {/* Deactivate Account Button */}
+            <div className="mt-8 flex justify-center">
+              <button
+                onClick={handleDeactivate}
+                className="bg-red-500 text-white px-6 py-3 rounded-full font-semibold shadow-xl hover:bg-red-600 transition duration-300 ease-in-out"
+                style={{ width: '300px' }}
+                disabled={isDeactivating}
+              >
+                {isDeactivating ? 'Deactivating...' : 'Deactivate Account'}
+              </button>
+            </div>            
+          </div>
+        </div>
+        )}
+          
 
       {/* Security Section */}
       {/*  {activeTab === 'security' && profileData && (*/}
