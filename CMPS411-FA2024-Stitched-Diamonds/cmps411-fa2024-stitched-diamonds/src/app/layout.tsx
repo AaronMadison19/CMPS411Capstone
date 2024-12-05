@@ -1,7 +1,7 @@
 // src/app/layout.tsx
 import Navbar from './components/navbar';
-import Footer from './components/footer'; 
-import './globals.css';  
+import Footer from './components/footer';
+import './globals.css';
 
 export const metadata = {
   title: 'Stitched Diamonds',
@@ -14,9 +14,9 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
       <body className="font-sans bg-gray-100">
         {/* Navbar */}
         <Navbar />
-        
+
         {/* Page Content */}
-        <main>{children}</main>
+        <main className="pt-16">{children}</main>
 
         {/* Footer */}
         <Footer />

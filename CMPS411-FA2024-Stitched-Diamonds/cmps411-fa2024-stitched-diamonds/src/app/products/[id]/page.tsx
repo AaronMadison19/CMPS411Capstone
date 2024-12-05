@@ -3,10 +3,9 @@
 import axios from 'axios';
 import https from 'https';
 import { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
 import { StarIcon } from '@heroicons/react/20/solid';
-import { Radio, RadioGroup } from '@headlessui/react';
-import { CurrencyDollarIcon, GlobeAmericasIcon } from '@heroicons/react/24/outline';
-import { useRouter } from 'next/navigation';
+import { RadioGroup } from '@headlessui/react';
 
 const httpsAgent = new https.Agent({
   rejectUnauthorized: false,
@@ -22,13 +21,15 @@ type Product = {
   quantityInStock: number;
 };
 
-export default function ProductPage({ params }: { params: { id: string } }) {
-  const { id } = params;
+export default function ProductPage() {
+  const params = useParams(); // Fetch params using the client-side router
+  const { id } = params as { id: string }; // Typecast if needed
   const [product, setProduct] = useState<Product | null>(null);
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
 
   useEffect(() => {
+    if (!id) return; // Ensure `id` is available before making the request
     const fetchProduct = async () => {
       try {
         const res = await axios.get(`https://localhost:7120/api/products/${id}`, { httpsAgent });
@@ -58,8 +59,8 @@ export default function ProductPage({ params }: { params: { id: string } }) {
             {/* Product Details */}
             <div className="lg:col-span-5 lg:col-start-8">
               <h1 className="text-xl font-medium text-gray-900">{product.name}</h1>
-              <p className="text-xl font-medium text-gray-900">${product.price}</p>
-              
+              <p className="text-xl font-medium text-gray-900">${product.price.toFixed(2)}</p>
+
               {/* Reviews */}
               <div className="mt-4">
                 <h2 className="sr-only">Reviews</h2>
@@ -82,7 +83,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                   <h2 className="text-sm font-medium text-gray-900">Color</h2>
                   <fieldset className="mt-2">
                     <RadioGroup value={selectedColor} onChange={setSelectedColor} className="flex items-center space-x-3">
-                      {/* Color options here */}
+                      {/* Color options */}
                     </RadioGroup>
                   </fieldset>
                 </div>
@@ -91,7 +92,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                   <h2 className="text-sm font-medium text-gray-900">Size</h2>
                   <fieldset className="mt-2">
                     <RadioGroup value={selectedSize} onChange={setSelectedSize} className="grid grid-cols-3 gap-3 sm:grid-cols-6">
-                      {/* Size options here */}
+                      {/* Size options */}
                     </RadioGroup>
                   </fieldset>
                 </div>
