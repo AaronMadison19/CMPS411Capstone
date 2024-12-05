@@ -1,32 +1,56 @@
-"use client"; 
+"use client";
 import { useState } from "react";
-import Navbar from "../components/navbar"; 
+import Navbar from "../components/navbar";
+import { useNavigate } from 'react-router-dom';
 
-const Login: React.FC = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const Login: React.FC = () => {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  event.preventDefault();
 
-    const response = await fetch('/api/login', {
-      method: 'POST',
+  const url = `https://localhost:7120/api/accounts/login?username=${username}&password=${password}`;
+  console.log('Fetching from URL:', url);
+
+  try {
+    const response = await fetch(url, {
+      method: 'GET',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        UserName: username,
-        Password: password,
-      })
     });
 
+    console.log('Response received.');
+
     if (response.ok) {
-      console.log('Login successful!');
-      // Redirect or perform any action on successful login
+      const data = await response.json();
+      if (data && data.data) {
+        const accountId = data.data.id;
+        console.log('Login successful! Account ID:', accountId);
+
+        // Clear the username and password fields
+        setUsername('');
+        setPassword('');
+        console.log('Username and password cleared');
+
+        // Navigate to /account and pass the ID as state
+        window.location.href = `/account?id=${accountId}`; // Navigate to the account page with the user's ID
+
+        // Redirect or handle the account ID
+        // Example: window.location.href = `/accounts/${accountId}`;
+      } else {
+        console.log('Account data not found in response.');
+        alert('Account data not found in response.')
+      }
     } else {
-      console.log('Failed to log in.');
+      console.error('Failed to log in:', response.status, response.statusText);
     }
-  };
+  } catch (error) {
+    console.error('Error during fetch:', error);
+  }
+};
+
 
   return (
     <div className="bg-gray-50 text-gray-900">

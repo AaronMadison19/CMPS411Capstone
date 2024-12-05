@@ -86,3 +86,6 @@ Migrations/
 # Azure settings
 azure/
 local.settings.json
+
+
+.env

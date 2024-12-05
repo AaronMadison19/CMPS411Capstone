@@ -32,12 +32,12 @@ namespace CMPS411_FA2024_Stitched_Diamonds.Controllers
                     LastName = p.LastName,
                     Email = p.Email,
                     Username = p.Username,
-                    PhoneNumber = p.PhoneNumber,
-                    BillingAddress = p.BillingAddress,
-                    ShippingAddress = p.ShippingAddress,
+                    PhoneNumber = p.PhoneNumber ?? "",
+                    BillingAddress = p.BillingAddress ?? "",
+                    ShippingAddress = p.ShippingAddress ?? "",
                     CreateDate = p.CreateDate,
                     IsActive = p.IsActive,
-                    Role = p.Role,
+                    Role = p.Role ?? "",
                 })
                 .ToList();
 
@@ -58,12 +58,12 @@ namespace CMPS411_FA2024_Stitched_Diamonds.Controllers
                     LastName = p.LastName,
                     Email = p.Email,
                     Username = p.Username,
-                    PhoneNumber = p.PhoneNumber,
-                    BillingAddress = p.BillingAddress,
-                    ShippingAddress = p.ShippingAddress,
+                    PhoneNumber = p.PhoneNumber ?? "",
+                    BillingAddress = p.BillingAddress ?? "",
+                    ShippingAddress = p.ShippingAddress ?? "",
                     CreateDate = p.CreateDate,
                     IsActive = p.IsActive,
-                    Role = p.Role,
+                    Role = p.Role ?? "",
                 })
                 .FirstOrDefault(account => account.Id == id);
 
@@ -75,6 +75,50 @@ namespace CMPS411_FA2024_Stitched_Diamonds.Controllers
 
             response.Data = account;
             return Ok(response);
+        }
+
+        [HttpGet("login")]
+        public ActionResult<Response<AccountGetDto>> GetAccountByCredentials(string username, string password)
+        {
+            var response = new Response<AccountGetDto>();
+
+            // Find the account based on username
+            var account = _dataContext.Accounts
+                .Where(a => a.Username == username)
+                .FirstOrDefault();
+
+            if (account == null)
+            {
+                response.AddError("username", "Account not found");
+                return NotFound(response);
+            }
+
+            // Validate the password
+            if (account.Password != password)
+            {
+                response.AddError("password", "Invalid password");
+                return Unauthorized(response); // Unauthorized status code
+            }
+
+            // Map to AccountGetDto if the login is successful
+            var accountDto = new AccountGetDto
+            {
+                Id = account.Id,
+                FirstName = account.FirstName,
+                LastName = account.LastName,
+                Email = account.Email,
+                Username = account.Username,
+                PhoneNumber = account.PhoneNumber ?? "",
+                BillingAddress = account.BillingAddress ?? "",
+                ShippingAddress = account.ShippingAddress ?? "",
+                CreateDate = account.CreateDate,
+                IsActive = account.IsActive,
+                Role = account.Role ?? "",
+            };
+
+            response.Data = accountDto;
+
+            return Ok(response); // Return the account data with ID if the login is successful
         }
 
         [HttpPost]
@@ -89,11 +133,11 @@ namespace CMPS411_FA2024_Stitched_Diamonds.Controllers
                 Email = accountDto.Email,
                 Username = accountDto.Username,
                 Password = accountDto.Password,
-                PhoneNumber = accountDto.PhoneNumber,
-                BillingAddress = accountDto.BillingAddress,
-                ShippingAddress = accountDto.ShippingAddress,
-                Role = accountDto.Role,
-                CreateDate = accountDto.CreateDate,
+                PhoneNumber = "",
+                BillingAddress = "",
+                ShippingAddress = "",
+                Role = "",
+                CreateDate = DateTime.UtcNow,
                 IsActive = accountDto.IsActive,
             };
 
@@ -107,10 +151,10 @@ namespace CMPS411_FA2024_Stitched_Diamonds.Controllers
                 LastName = accountDto.LastName,
                 Email = accountDto.Email,
                 Username= accountDto.Username,
-                PhoneNumber= accountDto.PhoneNumber,
-                BillingAddress= accountDto.BillingAddress,
-                ShippingAddress= accountDto.ShippingAddress,
-                Role = accountDto.Role,
+                //PhoneNumber= accountDto.PhoneNumber,
+                //BillingAddress= accountDto.BillingAddress,
+                //ShippingAddress= accountDto.ShippingAddress,
+                //Role = accountDto.Role,
                 CreateDate = accountDto.CreateDate,
                 IsActive = accountDto.IsActive,
             };
